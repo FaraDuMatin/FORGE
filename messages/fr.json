@@ -22,8 +22,21 @@
   },
   "new": {
     "title": "Lancer un projet",
-    "sub": "Nommez un objectif, choisissez une durée, préparez vos premières tâches et votre équipe. Une liste en direct montre ce qu'il manque encore à votre projet pour entrer sous les projecteurs.",
-    "soon": "Le formulaire de création arrive ensuite dans le développement."
+    "sub": "Nommez un objectif, choisissez une durée, préparez vos premières tâches et votre équipe. La liste montre ce qu'il faut pour entrer sous les projecteurs.",
+    "fTitle": "Titre du projet",
+    "fGoal": "L'objectif",
+    "fGoalHint": "Concret et réalisable. De « nettoyer la berge du canal » à « passer notre école au solaire ».",
+    "fCity": "Ville",
+    "fCountry": "Pays",
+    "fPool": "Durée",
+    "fPoolHint": "Le temps que devrait prendre ce projet. Les durées plus longues demandent plus de structure.",
+    "youLegend": "Vous (le mainteneur)",
+    "fName": "Votre nom",
+    "fEmail": "Votre courriel",
+    "fEmailHint": "Sert à dédupliquer l'équipe et à transmettre le projet. Jamais affiché publiquement.",
+    "fRole": "Votre rôle (facultatif)",
+    "fRoleHint": "Ex. : organisation, logistique. Les rôles comptent pour la préparation des durées longues.",
+    "submit": "Créer le projet"
   },
   "wins": {
     "title": "Mur des réussites",
@@ -36,15 +49,100 @@
     "halfYear": "Six mois",
     "year": "Un an"
   },
-  "ready": {
-    "heading": "Préparation",
-    "goal": "Un objectif clair et atteignable",
+  "readiness": {
+    "title": "Pour entrer sous les projecteurs",
+    "sub": "Des critères fixes, jamais des votes. Atteignez-les et le projet prend la prochaine place libre.",
+    "goal": "Un objectif clair et réalisable",
     "city": "Une ville",
     "tasks": "Au moins 3 tâches à prendre",
     "log": "Une première entrée de journal",
-    "crew": "Assez d'équipe pour ce groupe",
-    "roles": "Rôles nommés pourvus",
+    "crew": "Au moins {n} membres d'équipe",
+    "roles": "Au moins {n} rôles nommés",
     "successor": "Un successeur désigné",
     "funding": "Un lien de financement si des coûts existent"
+  },
+  "crew": {
+    "heading": "Équipe ({n})",
+    "maintainer": "mainteneur",
+    "joinHeading": "Rejoindre l'équipe",
+    "fName": "Nom",
+    "fEmail": "Courriel",
+    "fRole": "Rôle (facultatif)",
+    "fRoleHint": "Ce sur quoi vous aiderez. Compte pour la préparation des durées longues.",
+    "joinCta": "Rejoindre",
+    "joined": "Vous faites partie de l'équipe. Vous pouvez prendre des tâches.",
+    "joinedAlready": "Vous êtes déjà dans cette équipe."
+  },
+  "task": {
+    "heading": "Tâches",
+    "none": "Aucune tâche pour l'instant.",
+    "emailPlaceholder": "Le courriel utilisé pour rejoindre",
+    "claim": "Prendre",
+    "claimed": "Prises",
+    "done": "Terminées"
+  },
+  "log": {
+    "heading": "Journal de construction",
+    "empty": "Aucune mise à jour pour l'instant."
+  },
+  "project": {
+    "funding": "Financement transparent",
+    "outcomeHeading": "Résultat",
+    "readyHeading": "Prêt, en attente d'une place",
+    "readySub": "Ce projet remplit tous les critères. Il prend la prochaine place libre de son groupe, ou sa place au tirage quand les places sont disputées.",
+    "queuedHeading": "En préparation",
+    "queuedSub": "Ce qu'il manque encore à ce projet avant de prendre une place sous les projecteurs.",
+    "status": {
+      "QUEUED": "En file",
+      "SPOTLIGHT": "Sous les projecteurs",
+      "CLOSED": "Terminé",
+      "ADOPTABLE": "Cherche un mainteneur",
+      "CANCELLED": "Annulé"
+    }
+  },
+  "share": {
+    "copy": "Copier le lien de partage",
+    "copied": "Lien copié"
+  },
+  "manage": {
+    "eyebrow": "Panneau du mainteneur",
+    "viewPublic": "Voir la page publique",
+    "tasksHeading": "Tâches",
+    "taskLabel": "Nouvelle tâche",
+    "taskHint": "Quelque chose qu'un membre peut finir en quelques heures.",
+    "taskAdd": "Ajouter la tâche",
+    "noTasks": "Aucune tâche pour l'instant. Ajoutez-en pour que les gens aident.",
+    "markDone": "Marquer terminée",
+    "logHeading": "Journal de construction",
+    "logLabel": "Publier une mise à jour",
+    "logHint": "Ce que vous avez fait et pourquoi. La première entrée fait partie de la préparation.",
+    "logPost": "Publier",
+    "closeHeading": "Terminer le projet",
+    "closeLabel": "Résultat",
+    "closeHint": "Ce qui a été accompli. Cela devient le mode d'emploi sur le mur des réussites.",
+    "closeCta": "Clore comme terminé",
+    "closed": "Projet clos. Il vit maintenant sur le mur des réussites.",
+    "closedNotice": "Ce projet est terminé et vit sur le mur des réussites.",
+    "tokenHeading": "Conservez ce lien",
+    "tokenBody": "Cette URL est la seule clé pour gérer votre projet. Aucun compte ne permet de la récupérer. Copiez-la en lieu sûr.",
+    "tokenCopy": "Copier le lien de gestion",
+    "tokenCopied": "Copié",
+    "deniedHeading": "Clé absente ou incorrecte",
+    "deniedBody": "Gérer un projet nécessite son lien secret. Ouvrez le lien de gestion enregistré à la création."
+  },
+  "errors": {
+    "auth": "Ce lien de mainteneur est incorrect ou expiré.",
+    "notfound": "Introuvable.",
+    "form": {
+      "missing": "Veuillez remplir les champs requis.",
+      "pool": "Choisissez une durée valide."
+    },
+    "crew": {
+      "already": "Ce courriel fait déjà partie de cette équipe."
+    },
+    "task": {
+      "taken": "Cette tâche a déjà été prise.",
+      "joinFirst": "Rejoignez d'abord l'équipe, puis prenez la tâche avec le courriel utilisé."
+    }
   }
 }

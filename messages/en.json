@@ -22,8 +22,21 @@
   },
   "new": {
     "title": "Start a project",
-    "sub": "Name a goal, pick a duration, line up your first tasks and crew. A live checklist shows what your project still needs to be ready for a spotlight.",
-    "soon": "The create form lands next in the build."
+    "sub": "Name a goal, pick a duration, line up your first tasks and crew. The checklist shows what your project needs to be ready for a spotlight.",
+    "fTitle": "Project title",
+    "fGoal": "The goal",
+    "fGoalHint": "Concrete and finishable. From 'clean the canal bank' to 'get our school on solar'.",
+    "fCity": "City",
+    "fCountry": "Country",
+    "fPool": "Duration",
+    "fPoolHint": "How long this project should take. Longer pools ask for more structure.",
+    "youLegend": "You (the maintainer)",
+    "fName": "Your name",
+    "fEmail": "Your email",
+    "fEmailHint": "Used to dedupe crew and hand off the project. Never shown publicly.",
+    "fRole": "Your role (optional)",
+    "fRoleHint": "E.g. organizer, logistics. Roles count toward readiness on longer pools.",
+    "submit": "Create project"
   },
   "wins": {
     "title": "Win wall",
@@ -36,15 +49,100 @@
     "halfYear": "Six months",
     "year": "One year"
   },
-  "ready": {
-    "heading": "Readiness",
+  "readiness": {
+    "title": "To reach a spotlight",
+    "sub": "Fixed bars, never votes. Meet them and the project takes the next open slot.",
     "goal": "A clear, finishable goal",
     "city": "A city",
     "tasks": "At least 3 claimable tasks",
     "log": "A first build-log entry",
-    "crew": "Enough crew for this pool",
-    "roles": "Named roles filled",
+    "crew": "At least {n} crew",
+    "roles": "At least {n} named roles",
     "successor": "A named successor",
     "funding": "A funding link if there are costs"
+  },
+  "crew": {
+    "heading": "Crew ({n})",
+    "maintainer": "maintainer",
+    "joinHeading": "Join the crew",
+    "fName": "Name",
+    "fEmail": "Email",
+    "fRole": "Role (optional)",
+    "fRoleHint": "What you'll help with. Counts toward readiness on longer pools.",
+    "joinCta": "Join",
+    "joined": "You're on the crew. You can claim tasks now.",
+    "joinedAlready": "You're already on this crew."
+  },
+  "task": {
+    "heading": "Tasks",
+    "none": "No tasks yet.",
+    "emailPlaceholder": "The email you joined with",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "done": "Done"
+  },
+  "log": {
+    "heading": "Build log",
+    "empty": "No updates yet."
+  },
+  "project": {
+    "funding": "Transparent funding",
+    "outcomeHeading": "Outcome",
+    "readyHeading": "Ready, waiting for a slot",
+    "readySub": "This project meets every bar. It takes the next open slot in its pool, or its place in the lottery when slots are contested.",
+    "queuedHeading": "Getting ready",
+    "queuedSub": "What this project still needs before it can take a spotlight slot.",
+    "status": {
+      "QUEUED": "Queued",
+      "SPOTLIGHT": "In the spotlight",
+      "CLOSED": "Finished",
+      "ADOPTABLE": "Looking for a maintainer",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "share": {
+    "copy": "Copy share link",
+    "copied": "Link copied"
+  },
+  "manage": {
+    "eyebrow": "Maintainer panel",
+    "viewPublic": "View public page",
+    "tasksHeading": "Tasks",
+    "taskLabel": "New task",
+    "taskHint": "Something a crew member can finish in a couple of hours.",
+    "taskAdd": "Add task",
+    "noTasks": "No tasks yet. Add a few so people can help.",
+    "markDone": "Mark done",
+    "logHeading": "Build log",
+    "logLabel": "Post an update",
+    "logHint": "What you did and why. The first entry is part of readiness.",
+    "logPost": "Post update",
+    "closeHeading": "Finish the project",
+    "closeLabel": "Outcome",
+    "closeHint": "What got done. This becomes the playbook on the win wall.",
+    "closeCta": "Close as finished",
+    "closed": "Project closed. It now lives on the win wall.",
+    "closedNotice": "This project is finished and lives on the win wall.",
+    "tokenHeading": "Save this link",
+    "tokenBody": "This URL is the only key to manage your project. There are no accounts to recover it. Copy it somewhere safe.",
+    "tokenCopy": "Copy manage link",
+    "tokenCopied": "Copied",
+    "deniedHeading": "Wrong or missing key",
+    "deniedBody": "Managing a project needs its secret link. Open the manage link you saved when you created it."
+  },
+  "errors": {
+    "auth": "That maintainer link is wrong or expired.",
+    "notfound": "Not found.",
+    "form": {
+      "missing": "Please fill in the required fields.",
+      "pool": "Pick a valid duration."
+    },
+    "crew": {
+      "already": "That email is already on this crew."
+    },
+    "task": {
+      "taken": "That task was already claimed.",
+      "joinFirst": "Join the crew first, then claim with the email you joined with."
+    }
   }
 }

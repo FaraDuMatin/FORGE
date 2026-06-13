@@ -1,0 +1,169 @@
+import { notFound } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
+import { Header } from "@/components/Header";
+import { CrewList, type CrewMember } from "@/components/project/CrewList";
+import { JoinForm } from "@/components/project/JoinForm";
+import { TaskBoard, type TaskView } from "@/components/project/TaskBoard";
+import { BuildLog } from "@/components/project/BuildLog";
+import { ReadinessChecklist } from "@/components/project/ReadinessPanel";
+import { ShareLink } from "@/components/project/ShareLink";
+import { getProjectBySlug } from "@/server/projects";
+import { loadProjectReadiness } from "@/server/readiness";
+import type { ReadinessBar } from "@/lib/readiness";
+import type { Pool, ProjectStatus } from "@/generated/prisma/client";
+
+// Live data: slots and the build log change with every action.
+export const dynamic = "force-dynamic";
+
+export default async function ProjectPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
+  const project = await getProjectBySlug(slug);
+  if (!project) notFound();
+
+  const { bars, ready } = await loadProjectReadiness(project.id);
+
+  const members: CrewMember[] = project.members.map((m) => ({
+    id: m.id,
+    name: m.name,
+    role: m.role,
+    isMaintainer: m.email === project.maintainerEmail,
+  }));
+  const tasks: TaskView[] = project.tasks.map((task) => ({
+    id: task.id,
+    title: task.title,
+    status: task.status,
+    claimedByName: task.claimedByName,
+  }));
+
+  return (
+    <ProjectDetail
+      id={project.id}
+      slug={project.slug}
+      title={project.title}
+      goal={project.goal}
+      city={project.city}
+      country={project.country}
+      pool={project.pool}
+      status={project.status}
+      poolLabelKey={poolLabelKey(project.pool)}
+      outcome={project.outcome}
+      fundingUrl={project.fundingUrl}
+      ready={ready}
+      bars={bars}
+      members={members}
+      tasks={tasks}
+      updates={project.updates}
+    />
+  );
+}
+
+function poolLabelKey(pool: Pool): string {
+  return `pool.${{ WEEK: "week", MONTH: "month", HALF_YEAR: "halfYear", YEAR: "year" }[pool]}`;
+}
+
+type DetailProps = {
+  id: string;
+  slug: string;
+  title: string;
+  goal: string;
+  city: string;
+  country: string;
+  pool: Pool;
+  status: ProjectStatus;
+  poolLabelKey: string;
+  outcome: string | null;
+  fundingUrl: string | null;
+  ready: boolean;
+  bars: ReadinessBar[];
+  members: CrewMember[];
+  tasks: TaskView[];
+  updates: { id: string; authorName: string; text: string; createdAt: Date }[];
+};
+
+function ProjectDetail(props: DetailProps) {
+  const t = useTranslations("project");
+  const tk = useTranslations();
+
+  return (
+    <>
+      <Header />
+      <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
+          <StatusBadge status={props.status} />
+          <span>{tk(props.poolLabelKey)}</span>
+          <span aria-hidden>·</span>
+          <span>{props.city}, {props.country}</span>
+        </div>
+
+        <h1 className="mt-3 text-3xl font-bold tracking-tight">{props.title}</h1>
+        <p className="mt-3 whitespace-pre-wrap text-neutral-700 dark:text-neutral-300">{props.goal}</p>
+
+        <div className="mt-3">
+          <ShareLink />
+        </div>
+
+        {props.fundingUrl ? (
+          <a
+            href={props.fundingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-block rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-600 hover:border-neutral-400 dark:border-neutral-800 dark:text-neutral-400"
+          >
+            {t("funding")}
+          </a>
+        ) : null}
+
+        {props.status === "CLOSED" && props.outcome ? (
+          <section className="mt-8 rounded-lg border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-900 dark:bg-emerald-950">
+            <h2 className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">{t("outcomeHeading")}</h2>
+            <p className="mt-1 text-sm text-emerald-900 dark:text-emerald-200">{props.outcome}</p>
+          </section>
+        ) : null}
+
+        {props.status === "QUEUED" ? (
+          <section className="mt-8 rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
+            <h2 className="text-sm font-semibold">
+              {props.ready ? t("readyHeading") : t("queuedHeading")}
+            </h2>
+            <p className="mt-1 text-xs text-neutral-500">
+              {props.ready ? t("readySub") : t("queuedSub")}
+            </p>
+            <div className="mt-3">
+              <ReadinessChecklist pool={props.pool} bars={props.bars} />
+            </div>
+          </section>
+        ) : null}
+
+        <div className="mt-10 space-y-10">
+          <CrewList members={props.members} />
+          <TaskBoard slug={props.slug} tasks={props.tasks} />
+          <BuildLog entries={props.updates} />
+          {props.status !== "CLOSED" ? <JoinForm projectId={props.id} slug={props.slug} /> : null}
+        </div>
+      </main>
+    </>
+  );
+}
+
+function StatusBadge({ status }: { status: ProjectStatus }) {
+  const t = useTranslations("project.status");
+  const styles: Record<ProjectStatus, string> = {
+    QUEUED: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300",
+    SPOTLIGHT: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
+    CLOSED: "bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200",
+    ADOPTABLE: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
+    CANCELLED: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
+  };
+  return (
+    <span className={`rounded-full px-2 py-0.5 font-medium ${styles[status]}`}>
+      {t(status)}
+    </span>
+  );
+}

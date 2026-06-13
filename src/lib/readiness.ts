@@ -16,10 +16,11 @@ export type ReadinessInput = {
 };
 
 export type ReadinessBar = { key: string; met: boolean };
+export type ReadinessResult = { bars: ReadinessBar[]; ready: boolean };
 
 // Universal bars + tiered bars. Returns each bar so /new can render a live
 // checklist. READY = every bar met.
-export function readiness(input: ReadinessInput): { bars: ReadinessBar[]; ready: boolean } {
+export function readiness(input: ReadinessInput): ReadinessResult {
   const cfg = poolConfig(input.pool);
   const bars: ReadinessBar[] = [
     { key: "ready.goal", met: input.goal.trim().length > 0 },
