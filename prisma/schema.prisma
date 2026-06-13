@@ -1,0 +1,127 @@
+// FORGE — data model. Five tables, no auth, email is the only dedupe key.
+// Allocation lives in code (fill-on-ready, then lottery): see src/lib/allocation.ts.
+// learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Pool {
+  WEEK
+  MONTH
+  HALF_YEAR
+  YEAR
+}
+
+enum ProjectStatus {
+  QUEUED // posted, not yet ready or waiting for a slot
+  SPOTLIGHT // holds a slot, the community's focus
+  CLOSED // finished, outcome recorded, becomes a playbook
+  ADOPTABLE // maintainer stepped back, open for succession
+  CANCELLED // only People's Choice can be cancelled
+}
+
+enum TaskStatus {
+  OPEN
+  CLAIMED
+  DONE
+}
+
+model Project {
+  id    String @id @default(cuid())
+  slug  String @unique
+  title String
+  goal  String
+
+  city    String
+  country String
+
+  pool   Pool
+  status ProjectStatus @default(QUEUED)
+
+  // anti-starvation: a project that missed 3 draws is guaranteed the next slot
+  missedDraws Int @default(0)
+
+  // People's Choice: the one wildcard, voted, the only cancellable slot
+  isPeoplesChoice Boolean @default(false)
+
+  // succession: maintainer holds a secret token, optional named successor up front
+  maintainerName  String
+  maintainerEmail String
+  maintainerToken String  @unique @default(cuid())
+  successorName   String?
+  successorEmail  String?
+
+  // playbook lineage and optional transparent funding link (display-only)
+  clonedFrom String?
+  fundingUrl String?
+
+  // recorded when CLOSED, drives the win wall / playbook
+  outcome String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members Member[]
+  tasks   Task[]
+  updates Update[]
+  votes   PCVote[]
+
+  @@index([pool, status])
+  @@index([status])
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  role      String? // named role counts toward readiness for longer pools
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, email])
+  @@index([projectId])
+}
+
+model Task {
+  id             String     @id @default(cuid())
+  projectId      String
+  project        Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title          String
+  status         TaskStatus @default(OPEN)
+  claimedByName  String?
+  claimedByEmail String?
+  createdAt      DateTime   @default(now())
+
+  @@index([projectId])
+}
+
+model Update {
+  id         String   @id @default(cuid())
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  authorName String
+  text       String
+  createdAt  DateTime @default(now())
+
+  @@index([projectId, createdAt])
+}
+
+model PCVote {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  email     String
+  cycle     String // ISO week string, e.g. "2026-W24", derived from now() at write time
+  createdAt DateTime @default(now())
+
+  // one vote per email per weekly cycle
+  @@unique([email, cycle])
+  @@index([projectId, cycle])
+}

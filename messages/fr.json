@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "title": "FORGE — personne n'agit seul",
+    "description": "Les communautés construisent des projets réels comme l'open source construit des logiciels : en public, avec des tâches à prendre et des contributeurs crédités, concentrées sur quelques-uns à la fois, conçues pour survivre à leurs fondateurs."
+  },
+  "nav": {
+    "home": "Accueil",
+    "start": "Lancer un projet",
+    "wins": "Mur des réussites"
+  },
+  "home": {
+    "tagline": "Personne n'agit seul.",
+    "lead": "Chaque quartier a quelqu'un qui lance quelque chose. La plupart de ces projets meurent seuls. FORGE les construit en public, les transmet quand un fondateur s'en va, et transforme ceux qui aboutissent en modes d'emploi que n'importe quelle ville peut copier.",
+    "spotlightHeading": "Sous les projecteurs",
+    "spotlightSub": "Quelques projets à la fois, menés à terme, pas mille abandonnés.",
+    "openSlot": "Place libre",
+    "openSlotHint": "Attribuée dès qu'un projet est prêt.",
+    "peoplesChoice": "Choix du public",
+    "peoplesChoiceHint": "Le vote libre de la communauté. La seule place qui peut être annulée.",
+    "winWallTeaser": "Voyez ce que les communautés ont déjà accompli",
+    "startCta": "Lancer un projet"
+  },
+  "new": {
+    "title": "Lancer un projet",
+    "sub": "Nommez un objectif, choisissez une durée, préparez vos premières tâches et votre équipe. Une liste en direct montre ce qu'il manque encore à votre projet pour entrer sous les projecteurs.",
+    "soon": "Le formulaire de création arrive ensuite dans le développement."
+  },
+  "wins": {
+    "title": "Mur des réussites",
+    "sub": "Les projets terminés deviennent des modes d'emploi que chacun peut copier et relancer dans sa ville. Le crédit de duplication suit jusqu'où chacun voyage.",
+    "soon": "La bibliothèque de modes d'emploi arrive ensuite dans le développement."
+  },
+  "pool": {
+    "week": "Une semaine",
+    "month": "Un mois",
+    "halfYear": "Six mois",
+    "year": "Un an"
+  },
+  "ready": {
+    "heading": "Préparation",
+    "goal": "Un objectif clair et atteignable",
+    "city": "Une ville",
+    "tasks": "Au moins 3 tâches à prendre",
+    "log": "Une première entrée de journal",
+    "crew": "Assez d'équipe pour ce groupe",
+    "roles": "Rôles nommés pourvus",
+    "successor": "Un successeur désigné",
+    "funding": "Un lien de financement si des coûts existent"
+  }
+}

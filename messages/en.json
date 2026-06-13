@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "title": "FORGE — nobody acts alone",
+    "description": "Communities build real-world projects the way open source builds software: in public, with claimable tasks and credited contributors, focused on a few at a time, built to outlive their founders."
+  },
+  "nav": {
+    "home": "Home",
+    "start": "Start a project",
+    "wins": "Win wall"
+  },
+  "home": {
+    "tagline": "Nobody acts alone.",
+    "lead": "Every neighborhood has someone who starts something. Most of those projects die alone. FORGE builds them in public, hands them off when a founder steps away, and turns the ones that finish into playbooks any city can copy.",
+    "spotlightHeading": "In the spotlight",
+    "spotlightSub": "A few projects at a time, finished, not a thousand abandoned.",
+    "openSlot": "Open slot",
+    "openSlotHint": "Filled when a project becomes ready.",
+    "peoplesChoice": "People's Choice",
+    "peoplesChoiceHint": "The community's free vote. The only slot that can be cancelled.",
+    "winWallTeaser": "See what communities already finished",
+    "startCta": "Start a project"
+  },
+  "new": {
+    "title": "Start a project",
+    "sub": "Name a goal, pick a duration, line up your first tasks and crew. A live checklist shows what your project still needs to be ready for a spotlight.",
+    "soon": "The create form lands next in the build."
+  },
+  "wins": {
+    "title": "Win wall",
+    "sub": "Finished projects become playbooks anyone can copy and run in their own city. Fork credit tracks how far each one travels.",
+    "soon": "The playbook library lands next in the build."
+  },
+  "pool": {
+    "week": "One week",
+    "month": "One month",
+    "halfYear": "Six months",
+    "year": "One year"
+  },
+  "ready": {
+    "heading": "Readiness",
+    "goal": "A clear, finishable goal",
+    "city": "A city",
+    "tasks": "At least 3 claimable tasks",
+    "log": "A first build-log entry",
+    "crew": "Enough crew for this pool",
+    "roles": "Named roles filled",
+    "successor": "A named successor",
+    "funding": "A funding link if there are costs"
+  }
+}
