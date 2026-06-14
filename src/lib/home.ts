@@ -9,13 +9,11 @@ export type SpotlightCard = {
   isPeoplesChoice: boolean;
 };
 
-// Spotlighted projects grouped by pool, plus the People's Choice holder.
+// Spotlighted projects grouped by pool (the 12 normal slots). The People's Choice
+// holder is computed separately from votes — see src/server/peopleschoice.ts.
 // Degrades to empty when no database is connected yet, so the skeleton renders
 // and `next build` succeeds before Neon is wired.
-export async function getSpotlights(): Promise<{
-  byPool: Record<Pool, SpotlightCard[]>;
-  peoplesChoice: SpotlightCard | null;
-}> {
+export async function getSpotlights(): Promise<{ byPool: Record<Pool, SpotlightCard[]> }> {
   const empty: Record<Pool, SpotlightCard[]> = {
     WEEK: [],
     MONTH: [],
@@ -30,15 +28,11 @@ export async function getSpotlights(): Promise<{
       orderBy: { updatedAt: "desc" },
     });
 
-    const byPool = { ...empty, WEEK: [], MONTH: [], HALF_YEAR: [], YEAR: [] } as Record<Pool, SpotlightCard[]>;
-    let peoplesChoice: SpotlightCard | null = null;
-    for (const r of rows) {
-      if (r.isPeoplesChoice) peoplesChoice = r;
-      else byPool[r.pool].push(r);
-    }
-    return { byPool, peoplesChoice };
+    const byPool = { WEEK: [], MONTH: [], HALF_YEAR: [], YEAR: [] } as Record<Pool, SpotlightCard[]>;
+    for (const r of rows) byPool[r.pool].push(r);
+    return { byPool };
   } catch {
     // No DB yet (or unreachable): show the empty structure.
-    return { byPool: empty, peoplesChoice: null };
+    return { byPool: empty };
   }
 }

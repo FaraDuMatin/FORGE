@@ -6,7 +6,8 @@
   "nav": {
     "home": "Home",
     "start": "Start a project",
-    "wins": "Win wall"
+    "wins": "Win wall",
+    "pc": "People's Choice"
   },
   "home": {
     "tagline": "Nobody acts alone.",
@@ -17,6 +18,9 @@
     "openSlotHint": "Filled when a project becomes ready.",
     "peoplesChoice": "People's Choice",
     "peoplesChoiceHint": "The community's free vote. The only slot that can be cancelled.",
+    "pcVotes": "{n, plural, one {# vote} other {# votes}}",
+    "pcVoteNow": "Vote for this week's wildcard",
+    "pcSeeAll": "See all and vote",
     "winWallTeaser": "See what communities already finished",
     "startCta": "Start a project"
   },
@@ -127,8 +131,52 @@
     "tokenBody": "This URL is the only key to manage your project. There are no accounts to recover it. Copy it somewhere safe.",
     "tokenCopy": "Copy manage link",
     "tokenCopied": "Copied",
+    "handoffHeading": "Send this to your successor",
+    "handoffBody": "You stepped back. This link makes the new maintainer — send it to them. It's the only key to manage the project, and your old link no longer works.",
+    "adoptedHeading": "You adopted this project",
+    "adoptedBody": "You're the maintainer now. Save this link — it's the only key to manage the project. There are no accounts to recover it.",
     "deniedHeading": "Wrong or missing key",
     "deniedBody": "Managing a project needs its secret link. Open the manage link you saved when you created it."
+  },
+  "pc": {
+    "eyebrow": "One wildcard slot",
+    "title": "People's Choice",
+    "lead": "Every other spotlight is earned by readiness and a fair lottery — reach can't buy them. This one slot is the exception: the community's free vote. One vote per person each week, and you can only back a project that's already ready.",
+    "cycleLabel": "This week · {cycle}",
+    "holderHeading": "Leading this week",
+    "noHolder": "No votes yet this week. Be the first to back a project.",
+    "eligibleHeading": "Ready and in the running",
+    "noneEligible": "No projects are ready for People's Choice right now. Check back once more projects hit their readiness bars.",
+    "votes": "{n, plural, =0 {No votes yet} one {# vote} other {# votes}}",
+    "votersLine": "{names} voted",
+    "votersMore": "{names} +{n} voted",
+    "voteName": "Your name",
+    "voteEmail": "Your email",
+    "voteSubmit": "Cast my vote",
+    "votedThisWeek": "You've used your vote this week. Votes reset next week.",
+    "votedThanks": "Vote counted — thanks for backing this one.",
+    "backHeading": "Back this for People's Choice",
+    "backSub": "This project is ready. Give it your weekly vote to push it toward the wildcard spotlight.",
+    "explainerHeading": "How People's Choice works",
+    "explainer": "Only ready projects (real goal, crew, tasks, a build-log entry) can be voted for, so votes can never push an empty project into the spotlight. The most-voted ready project holds the slot; ties go to the one that's been waiting longest. It resets every week, and it's the only slot a steward can cancel."
+  },
+  "succession": {
+    "successorHeading": "Name a successor",
+    "successorSub": "Who takes over if you step away. Required on six-month and one-year pools; optional but recommended on shorter ones — it lets you hand off cleanly without the project going up for adoption.",
+    "successorName": "Successor name",
+    "successorEmail": "Successor email",
+    "successorSave": "Save successor",
+    "successorSaved": "Successor saved.",
+    "stepBackHeading": "Step back",
+    "stepBackWithSuccessor": "You named {name} as successor. Stepping back hands them the project — it keeps its place — and gives you a link to send them.",
+    "stepBackWithoutSuccessor": "No successor named. Stepping back puts the project up for adoption and releases its spotlight slot until someone takes it on.",
+    "stepBackCta": "Step back from this project",
+    "adoptHeading": "Adopt this project",
+    "adoptableSub": "The last maintainer stepped back. Adopt it to keep the work alive — you become the maintainer and the project re-enters the running for a spotlight.",
+    "adoptName": "Your name",
+    "adoptEmail": "Your email",
+    "adoptRole": "Your role (optional)",
+    "adoptCta": "Adopt this project"
   },
   "errors": {
     "auth": "That maintainer link is wrong or expired.",
@@ -143,6 +191,13 @@
     "task": {
       "taken": "That task was already claimed.",
       "joinFirst": "Join the crew first, then claim with the email you joined with."
+    },
+    "adopt": {
+      "notAdoptable": "This project isn't open for adoption."
+    },
+    "pc": {
+      "voted": "You've already used your vote this week. Votes reset next week.",
+      "ineligible": "This project isn't eligible for People's Choice right now."
     }
   }
 }

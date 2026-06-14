@@ -7,9 +7,12 @@ import { AddTaskForm } from "@/components/manage/AddTaskForm";
 import { PostUpdateForm } from "@/components/manage/PostUpdateForm";
 import { ManageTaskList } from "@/components/manage/ManageTaskList";
 import { CloseProjectForm } from "@/components/manage/CloseProjectForm";
+import { SetSuccessorForm } from "@/components/manage/SetSuccessorForm";
+import { StepBackForm } from "@/components/manage/StepBackForm";
 import { TokenReveal } from "@/components/manage/TokenReveal";
 import type { ManageContext } from "@/components/manage/ManageHiddenFields";
 import { getProjectBySlug } from "@/server/projects";
+import type { ProjectStatus } from "@/generated/prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -18,10 +21,10 @@ export default async function ManagePage({
   searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams: Promise<{ t?: string; created?: string }>;
+  searchParams: Promise<{ t?: string; created?: string; handoff?: string; adopted?: string }>;
 }) {
   const { locale, slug } = await params;
-  const { t: token, created } = await searchParams;
+  const { t: token, created, handoff, adopted } = await searchParams;
   setRequestLocale(locale);
 
   const project = await getProjectBySlug(slug);
@@ -39,13 +42,17 @@ export default async function ManagePage({
     claimedByName: task.claimedByName,
   }));
 
+  const notice = created === "1" ? "created" : handoff === "1" ? "handoff" : adopted === "1" ? "adopted" : null;
+
   return (
     <Dashboard
       ctx={ctx}
       slug={slug}
       title={project.title}
-      closed={project.status === "CLOSED"}
-      justCreated={created === "1"}
+      status={project.status}
+      notice={notice}
+      successorName={project.successorName}
+      successorEmail={project.successorEmail}
       tasks={tasks}
     />
   );
@@ -55,18 +62,25 @@ function Dashboard({
   ctx,
   slug,
   title,
-  closed,
-  justCreated,
+  status,
+  notice,
+  successorName,
+  successorEmail,
   tasks,
 }: {
   ctx: ManageContext;
   slug: string;
   title: string;
-  closed: boolean;
-  justCreated: boolean;
+  status: ProjectStatus;
+  notice: "created" | "handoff" | "adopted" | null;
+  successorName: string | null;
+  successorEmail: string | null;
   tasks: { id: string; title: string; status: "OPEN" | "CLAIMED" | "DONE"; claimedByName: string | null }[];
 }) {
   const t = useTranslations("manage");
+  const ts = useTranslations("succession");
+  const closed = status === "CLOSED";
+  const hasSuccessor = Boolean(successorName && successorEmail);
 
   return (
     <>
@@ -80,7 +94,7 @@ function Dashboard({
           </Link>
         </div>
 
-        {justCreated ? <TokenReveal /> : null}
+        {notice ? <TokenReveal variant={notice} /> : null}
 
         {closed ? (
           <p className="rounded-lg border border-neutral-200 p-4 text-sm text-neutral-500 dark:border-neutral-800">
@@ -98,6 +112,17 @@ function Dashboard({
             <Section title={t("logHeading")}>
               <PostUpdateForm {...ctx} />
             </Section>
+
+            <Section title={ts("successorHeading")}>
+              <p className="mb-3 text-sm text-neutral-500">{ts("successorSub")}</p>
+              <SetSuccessorForm ctx={ctx} successorName={successorName} successorEmail={successorEmail} />
+            </Section>
+
+            {status !== "ADOPTABLE" ? (
+              <Section title={ts("stepBackHeading")}>
+                <StepBackForm ctx={ctx} hasSuccessor={hasSuccessor} successorName={successorName} />
+              </Section>
+            ) : null}
 
             <Section title={t("closeHeading")}>
               <CloseProjectForm {...ctx} />

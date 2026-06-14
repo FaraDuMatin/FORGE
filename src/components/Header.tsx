@@ -10,6 +10,9 @@ export function Header() {
         FORGE
       </Link>
       <nav className="flex items-center gap-4">
+        <Link href="/pc" className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
+          {t("pc")}
+        </Link>
         <Link href="/wins" className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
           {t("wins")}
         </Link>

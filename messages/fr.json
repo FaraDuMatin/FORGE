@@ -6,7 +6,8 @@
   "nav": {
     "home": "Accueil",
     "start": "Lancer un projet",
-    "wins": "Mur des réussites"
+    "wins": "Mur des réussites",
+    "pc": "Choix du public"
   },
   "home": {
     "tagline": "Personne n'agit seul.",
@@ -17,6 +18,9 @@
     "openSlotHint": "Attribuée dès qu'un projet est prêt.",
     "peoplesChoice": "Choix du public",
     "peoplesChoiceHint": "Le vote libre de la communauté. La seule place qui peut être annulée.",
+    "pcVotes": "{n, plural, one {# voix} other {# voix}}",
+    "pcVoteNow": "Votez pour le choix de la semaine",
+    "pcSeeAll": "Tout voir et voter",
     "winWallTeaser": "Voyez ce que les communautés ont déjà accompli",
     "startCta": "Lancer un projet"
   },
@@ -127,8 +131,52 @@
     "tokenBody": "Cette URL est la seule clé pour gérer votre projet. Aucun compte ne permet de la récupérer. Copiez-la en lieu sûr.",
     "tokenCopy": "Copier le lien de gestion",
     "tokenCopied": "Copié",
+    "handoffHeading": "Envoyez ceci à votre successeur",
+    "handoffBody": "Vous vous êtes retiré. Ce lien désigne le nouveau mainteneur — envoyez-le-lui. C'est la seule clé pour gérer le projet, et votre ancien lien ne fonctionne plus.",
+    "adoptedHeading": "Vous avez adopté ce projet",
+    "adoptedBody": "Vous êtes désormais le mainteneur. Conservez ce lien — c'est la seule clé pour gérer le projet. Aucun compte ne permet de le récupérer.",
     "deniedHeading": "Clé absente ou incorrecte",
     "deniedBody": "Gérer un projet nécessite son lien secret. Ouvrez le lien de gestion enregistré à la création."
+  },
+  "pc": {
+    "eyebrow": "Une place joker",
+    "title": "Choix du public",
+    "lead": "Toutes les autres places se gagnent par la préparation et un tirage équitable — l'influence ne les achète pas. Cette place est l'exception : le vote libre de la communauté. Une voix par personne et par semaine, et vous ne pouvez soutenir qu'un projet déjà prêt.",
+    "cycleLabel": "Cette semaine · {cycle}",
+    "holderHeading": "En tête cette semaine",
+    "noHolder": "Aucune voix cette semaine. Soyez le premier à soutenir un projet.",
+    "eligibleHeading": "Prêts et en lice",
+    "noneEligible": "Aucun projet n'est prêt pour le Choix du public en ce moment. Revenez quand d'autres projets auront atteint leurs critères.",
+    "votes": "{n, plural, =0 {Aucune voix} one {# voix} other {# voix}}",
+    "votersLine": "{names} ont voté",
+    "votersMore": "{names} +{n} ont voté",
+    "voteName": "Votre nom",
+    "voteEmail": "Votre courriel",
+    "voteSubmit": "Voter",
+    "votedThisWeek": "Vous avez utilisé votre voix cette semaine. Les voix sont réinitialisées la semaine prochaine.",
+    "votedThanks": "Voix comptée — merci pour votre soutien.",
+    "backHeading": "Soutenir ce projet au Choix du public",
+    "backSub": "Ce projet est prêt. Donnez-lui votre voix de la semaine pour le pousser vers la place joker.",
+    "explainerHeading": "Comment fonctionne le Choix du public",
+    "explainer": "Seuls les projets prêts (objectif réel, équipe, tâches, une entrée de journal) peuvent recevoir des voix, pour qu'un vote ne puisse jamais propulser un projet vide sous les projecteurs. Le projet prêt le plus voté tient la place ; en cas d'égalité, c'est celui qui attend depuis le plus longtemps. Tout se réinitialise chaque semaine, et c'est la seule place qu'un steward peut annuler."
+  },
+  "succession": {
+    "successorHeading": "Désigner un successeur",
+    "successorSub": "Qui prend le relais si vous partez. Obligatoire pour les durées de six mois et un an ; facultatif mais recommandé pour les plus courtes — cela permet une transmission propre sans mettre le projet en adoption.",
+    "successorName": "Nom du successeur",
+    "successorEmail": "Courriel du successeur",
+    "successorSave": "Enregistrer le successeur",
+    "successorSaved": "Successeur enregistré.",
+    "stepBackHeading": "Se retirer",
+    "stepBackWithSuccessor": "Vous avez désigné {name} comme successeur. Vous retirer lui transmet le projet — il garde sa place — et vous donne un lien à lui envoyer.",
+    "stepBackWithoutSuccessor": "Aucun successeur désigné. Vous retirer met le projet en adoption et libère sa place sous les projecteurs jusqu'à ce que quelqu'un le reprenne.",
+    "stepBackCta": "Me retirer de ce projet",
+    "adoptHeading": "Adopter ce projet",
+    "adoptableSub": "Le dernier mainteneur s'est retiré. Adoptez-le pour garder le travail vivant — vous devenez le mainteneur et le projet retourne dans la course à une place.",
+    "adoptName": "Votre nom",
+    "adoptEmail": "Votre courriel",
+    "adoptRole": "Votre rôle (facultatif)",
+    "adoptCta": "Adopter ce projet"
   },
   "errors": {
     "auth": "Ce lien de mainteneur est incorrect ou expiré.",
@@ -143,6 +191,13 @@
     "task": {
       "taken": "Cette tâche a déjà été prise.",
       "joinFirst": "Rejoignez d'abord l'équipe, puis prenez la tâche avec le courriel utilisé."
+    },
+    "adopt": {
+      "notAdoptable": "Ce projet n'est pas ouvert à l'adoption."
+    },
+    "pc": {
+      "voted": "Vous avez déjà utilisé votre voix cette semaine. Les voix sont réinitialisées la semaine prochaine.",
+      "ineligible": "Ce projet n'est pas éligible au Choix du public pour le moment."
     }
   }
 }

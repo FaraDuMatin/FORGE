@@ -7,9 +7,12 @@ import { JoinForm } from "@/components/project/JoinForm";
 import { TaskBoard, type TaskView } from "@/components/project/TaskBoard";
 import { BuildLog } from "@/components/project/BuildLog";
 import { ReadinessChecklist } from "@/components/project/ReadinessPanel";
+import { AdoptForm } from "@/components/project/AdoptForm";
 import { ShareLink } from "@/components/project/ShareLink";
+import { VotePanel } from "@/components/pc/VotePanel";
 import { getProjectBySlug } from "@/server/projects";
 import { loadProjectReadiness } from "@/server/readiness";
+import { hasVotedThisCycle } from "@/server/peopleschoice";
 import type { ReadinessBar } from "@/lib/readiness";
 import type { Pool, ProjectStatus } from "@/generated/prisma/client";
 
@@ -28,6 +31,7 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const { bars, ready } = await loadProjectReadiness(project.id);
+  const hasVoted = await hasVotedThisCycle();
 
   const members: CrewMember[] = project.members.map((m) => ({
     id: m.id,
@@ -56,6 +60,7 @@ export default async function ProjectPage({
       outcome={project.outcome}
       fundingUrl={project.fundingUrl}
       ready={ready}
+      hasVoted={hasVoted}
       bars={bars}
       members={members}
       tasks={tasks}
@@ -81,6 +86,7 @@ type DetailProps = {
   outcome: string | null;
   fundingUrl: string | null;
   ready: boolean;
+  hasVoted: boolean;
   bars: ReadinessBar[];
   members: CrewMember[];
   tasks: TaskView[];
@@ -89,6 +95,7 @@ type DetailProps = {
 
 function ProjectDetail(props: DetailProps) {
   const t = useTranslations("project");
+  const tpc = useTranslations("pc");
   const tk = useTranslations();
 
   return (
@@ -127,6 +134,12 @@ function ProjectDetail(props: DetailProps) {
           </section>
         ) : null}
 
+        {props.status === "ADOPTABLE" ? (
+          <section className="mt-8">
+            <AdoptForm projectId={props.id} slug={props.slug} />
+          </section>
+        ) : null}
+
         {props.status === "QUEUED" ? (
           <section className="mt-8 rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
             <h2 className="text-sm font-semibold">
@@ -137,6 +150,16 @@ function ProjectDetail(props: DetailProps) {
             </p>
             <div className="mt-3">
               <ReadinessChecklist pool={props.pool} bars={props.bars} />
+            </div>
+          </section>
+        ) : null}
+
+        {props.status === "QUEUED" && props.ready ? (
+          <section className="mt-8 rounded-lg border border-emerald-300 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-950">
+            <h2 className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">{tpc("backHeading")}</h2>
+            <p className="mt-1 text-sm text-emerald-900 dark:text-emerald-200">{tpc("backSub")}</p>
+            <div className="mt-3">
+              <VotePanel projectId={props.id} slug={props.slug} hasVoted={props.hasVoted} />
             </div>
           </section>
         ) : null}

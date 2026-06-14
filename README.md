@@ -73,4 +73,10 @@ prisma/schema.prisma five models: Project, Member, Task, Update, PCVote
 messages/            en.json, fr.json
 ```
 
+## Roadmap / deferred
+
+- **Magic-link vote verification.** People's Choice voting is honor-system in the MVP: email + cookie/localStorage dedup, bounded by READY-only eligibility, a single weekly slot, weekly reset, and steward cancellation. A later upgrade verifies the voter's email via a magic link (verification only — no accounts, no user table) to harden one-person-one-vote without adding a login wall. We deliberately do **not** gate voting behind joining a project (no forced participation).
+- **Steward / admin console.** A privileged view to confirm a project is genuinely READY (real crew, real tasks) and to cancel spam or off-topic People's Choice entries. Deferred — it's an identity/permissions shift, not a small add.
+- **Account migration (if ever).** tokens-in-URL → Better Auth (self-hosted, data stays in our Postgres; preferred over Clerk for data custody). ~1–2 days, low data-risk because email is already the universal key, so backfill is a clean join. Kept out by choice — token-in-URL *is* the minimal-data Equitable story.
+
 Built solo for the Green Hackathon, June 2026.
