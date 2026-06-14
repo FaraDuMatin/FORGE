@@ -10,7 +10,9 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "npx tsx scripts/seed.ts"
+    "db:seed": "npx tsx scripts/seed.ts",
+    "db:links": "npx tsx scripts/links.ts",
+    "db:search": "npx tsx scripts/search-index.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

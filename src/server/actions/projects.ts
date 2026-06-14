@@ -24,11 +24,19 @@ export async function createProject(_prev: ActionState, fd: FormData): Promise<A
   const maintainerName = field(fd, "maintainerName");
   const maintainerEmail = email(fd, "maintainerEmail");
   const role = field(fd, "maintainerRole") || null;
+  const clonedFromRaw = field(fd, "clonedFrom");
 
   if (!title || !goal || !city || !country || !maintainerName || !maintainerEmail) {
     return { error: "form.missing" };
   }
   if (!VALID_POOLS.has(pool)) return { error: "form.pool" };
+
+  // Forked from a playbook? Only keep the lineage if the source really exists.
+  let clonedFrom: string | null = null;
+  if (clonedFromRaw) {
+    const source = await prisma.project.findUnique({ where: { id: clonedFromRaw }, select: { id: true } });
+    clonedFrom = source?.id ?? null;
+  }
 
   const project = await prisma.project.create({
     data: {
@@ -38,6 +46,7 @@ export async function createProject(_prev: ActionState, fd: FormData): Promise<A
       city,
       country,
       pool,
+      clonedFrom,
       maintainerName,
       maintainerEmail,
       members: { create: { name: maintainerName, email: maintainerEmail, role } },

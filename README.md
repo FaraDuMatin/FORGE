@@ -73,6 +73,25 @@ prisma/schema.prisma five models: Project, Member, Task, Update, PCVote
 messages/            en.json, fr.json
 ```
 
+## Styling notes (cards / spotlight glow)
+
+Note to self for tuning the spotlight look.
+
+**Glow** — a slight emerald glow in the bottom-left corner marks a spotlight card.
+- All project cards (home strip, `/spotlight`, `/projects`): [`src/lib/cardStyle.ts`](src/lib/cardStyle.ts), constants `GLOW` (spotlight) + `GLOW_STRONG` (People's Choice).
+- Big home PC card: [`src/components/home/PeoplesChoiceFeature.tsx`](src/components/home/PeoplesChoiceFeature.tsx) (its own inline gradient).
+
+Inside each `radial-gradient(ellipse 42% 55% at 0% 100%, rgba(16,185,129,0.10), transparent)`:
+- **Intensity** = the last number `0.10` → lower = fainter, higher = stronger.
+- **Reach / size** = `42% 55%` → smaller = tighter corner spot.
+- **Corner** = `at 0% 100%` = bottom-left (`100% 100%` = bottom-right, etc.).
+
+Current values: spotlight `0.10 / 42% 55%`, PC card `0.15 / 48% 60%`, big PC card `0.14 / 45% 60%`.
+
+**Border** — same `cardStyle.ts`: the `border-neutral-200 dark:border-neutral-800` on each branch. Fainter → `dark:border-neutral-800/50`. No border at all → remove `border` from `BASE` and the `border-*` classes.
+
+**Status pill colours** — [`src/components/project/StatusBadge.tsx`](src/components/project/StatusBadge.tsx): Spotlight = emerald, Queued = neutral, Finished = blue, Needs-maintainer = amber, Cancelled = red.
+
 ## Roadmap / deferred
 
 - **Magic-link vote verification.** People's Choice voting is honor-system in the MVP: email + cookie/localStorage dedup, bounded by READY-only eligibility, a single weekly slot, weekly reset, and steward cancellation. A later upgrade verifies the voter's email via a magic link (verification only — no accounts, no user table) to harden one-person-one-vote without adding a login wall. We deliberately do **not** gate voting behind joining a project (no forced participation).

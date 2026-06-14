@@ -8,11 +8,13 @@
     "start": "Lancer un projet",
     "wins": "Mur des réussites",
     "pc": "Choix du public",
-    "projects": "Projets"
+    "projects": "Projets",
+    "spotlight": "Projecteurs"
   },
   "home": {
     "tagline": "Personne n'agit seul.",
-    "lead": "Chaque quartier a quelqu'un qui lance quelque chose. La plupart de ces projets meurent seuls. FORGE les construit en public, les transmet quand un fondateur s'en va, et transforme ceux qui aboutissent en modes d'emploi que n'importe quelle ville peut copier.",
+    "heroHeadline": "Construisez au grand jour. Terminez ensemble.",
+    "heroSub": "Les communautés mènent de vrais projets comme l'open source construit des logiciels — des tâches à réclamer, des gens crédités, quelques-uns menés à terme à la fois.",
     "spotlightHeading": "Sous les projecteurs",
     "spotlightSub": "Quelques projets à la fois, menés à terme, pas mille abandonnés.",
     "openSlot": "Place libre",
@@ -20,18 +22,44 @@
     "peoplesChoice": "Choix du public",
     "peoplesChoiceHint": "Le vote libre de la communauté. La seule place qui peut être annulée.",
     "pcVotes": "{n, plural, one {# voix} other {# voix}}",
-    "pcVoteNow": "Votez pour le choix de la semaine",
+    "pcVoteNow": "Soutenez un projet prêt pour la place joker",
     "pcSeeAll": "Tout voir et voter",
+    "pcBadge": "Choix du public",
+    "pcEmptyTitle": "La place joker est libre",
+    "browseSpotlights": "Voir tous les projecteurs",
+    "spotlightEmpty": "Aucun projet sous les projecteurs pour l'instant.",
+    "winsTeaser": "{finished, plural, one {# mode d'emploi terminé} other {# modes d'emploi terminés}} · {copies, plural, =0 {pas encore copié} one {copié dans # ville} other {copiés dans # villes}}",
     "winWallTeaser": "Voyez ce que les communautés ont déjà accompli",
     "startCta": "Lancer un projet",
     "joinCta": "Rejoindre un projet"
   },
   "directory": {
     "title": "Tous les projets",
-    "sub": "Tous les projets sur FORGE — sous les projecteurs, prêts et en attente, en préparation, ou terminés. Ouvrez-en un pour rejoindre l'équipe ou prendre une tâche.",
+    "sub": "Tous les projets sur FORGE — sous les projecteurs, prêts et en attente, en préparation, ou terminés. Cherchez ou filtrez, puis ouvrez-en un pour rejoindre l'équipe ou prendre une tâche.",
     "ready": "Prêt, en attente d'une place",
     "gettingReady": "En préparation",
+    "searchPlaceholder": "Cherchez un projet, une ville, un objectif…",
+    "allDurations": "Toutes les durées",
+    "allStages": "Toutes les étapes",
+    "stage": {
+      "spotlight": "Sous les projecteurs",
+      "queued": "En lice",
+      "adoptable": "Cherche un mainteneur",
+      "closed": "Terminé"
+    },
+    "results": "{n, plural, =0 {Aucun résultat} one {# projet} other {# projets}}",
+    "noResults": "Aucun projet ne correspond. Essayez un autre mot ou retirez les filtres.",
+    "seeAll": "Tout voir ({n})",
+    "viewGrid": "Grille",
+    "viewList": "Liste",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "pageOf": "Page {page} sur {total}",
     "empty": "Aucun projet pour l'instant. Soyez le premier à en lancer un."
+  },
+  "spotlight": {
+    "title": "Sous les projecteurs",
+    "sub": "Quelques projets à la fois, en pleine lumière et menés à terme — trois places par durée, plus le Choix du public. Les places libres se remplissent dès qu'un projet est prêt."
   },
   "new": {
     "title": "Lancer un projet",
@@ -49,12 +77,17 @@
     "fEmailHint": "Sert à dédupliquer l'équipe et à transmettre le projet. Jamais affiché publiquement.",
     "fRole": "Votre rôle (facultatif)",
     "fRoleHint": "Ex. : organisation, logistique. Les rôles comptent pour la préparation des durées longues.",
-    "submit": "Créer le projet"
+    "submit": "Créer le projet",
+    "forkingFrom": "Vous copiez le mode d'emploi de « {title} ». Adaptez tout à votre ville, puis appropriez-le."
   },
   "wins": {
     "title": "Mur des réussites",
     "sub": "Les projets terminés deviennent des modes d'emploi que chacun peut copier et relancer dans sa ville. Le crédit de duplication suit jusqu'où chacun voyage.",
-    "soon": "La bibliothèque de modes d'emploi arrive ensuite dans le développement."
+    "empty": "Aucun projet terminé pour l'instant. La première communauté qui en clôt un écrit le premier mode d'emploi.",
+    "finished": "Terminé",
+    "forkCta": "Copier ce mode d'emploi",
+    "copiedIn": "Copié dans {n, plural, one {# ville} other {# villes}}",
+    "notYetCopied": "Pas encore copié — soyez la première ville."
   },
   "pool": {
     "week": "Une semaine",
@@ -100,6 +133,8 @@
   },
   "project": {
     "funding": "Financement transparent",
+    "forkedFromLabel": "Forké depuis",
+    "copiedIn": "Copié dans {n, plural, one {# ville} other {# villes}}",
     "outcomeHeading": "Résultat",
     "readyHeading": "Prêt, en attente d'une place",
     "readySub": "Ce projet remplit tous les critères. Il prend la prochaine place libre de son groupe, ou sa place au tirage quand les places sont disputées.",

@@ -8,11 +8,13 @@
     "start": "Start a project",
     "wins": "Win wall",
     "pc": "People's Choice",
-    "projects": "Projects"
+    "projects": "Projects",
+    "spotlight": "Spotlight"
   },
   "home": {
     "tagline": "Nobody acts alone.",
-    "lead": "Every neighborhood has someone who starts something. Most of those projects die alone. FORGE builds them in public, hands them off when a founder steps away, and turns the ones that finish into playbooks any city can copy.",
+    "heroHeadline": "Build it in public. Finish it together.",
+    "heroSub": "Communities take on real-world projects the way open source builds software — claimable tasks, credited people, a few carried to the finish at a time.",
     "spotlightHeading": "In the spotlight",
     "spotlightSub": "A few projects at a time, finished, not a thousand abandoned.",
     "openSlot": "Open slot",
@@ -20,18 +22,44 @@
     "peoplesChoice": "People's Choice",
     "peoplesChoiceHint": "The community's free vote. The only slot that can be cancelled.",
     "pcVotes": "{n, plural, one {# vote} other {# votes}}",
-    "pcVoteNow": "Vote for this week's wildcard",
+    "pcVoteNow": "Back a ready project for the wildcard slot",
     "pcSeeAll": "See all and vote",
+    "pcBadge": "People's Choice",
+    "pcEmptyTitle": "The wildcard slot is open",
+    "browseSpotlights": "Browse all spotlights",
+    "spotlightEmpty": "No projects in the spotlight yet.",
+    "winsTeaser": "{finished, plural, one {# finished playbook} other {# finished playbooks}} · {copies, plural, =0 {not yet copied} one {copied in # city} other {copied in # cities}}",
     "winWallTeaser": "See what communities already finished",
     "startCta": "Start a project",
     "joinCta": "Join a project"
   },
   "directory": {
     "title": "All projects",
-    "sub": "Every project on FORGE — in the spotlight, ready and waiting, getting ready, or finished. Open one to join the crew or claim a task.",
+    "sub": "Every project on FORGE — in the spotlight, ready and waiting, getting ready, or finished. Search or filter, then open one to join the crew or claim a task.",
     "ready": "Ready, waiting for a slot",
     "gettingReady": "Getting ready",
+    "searchPlaceholder": "Search projects, cities, goals…",
+    "allDurations": "All durations",
+    "allStages": "All stages",
+    "stage": {
+      "spotlight": "In the spotlight",
+      "queued": "In the running",
+      "adoptable": "Needs a maintainer",
+      "closed": "Finished"
+    },
+    "results": "{n, plural, =0 {No matches} one {# project} other {# projects}}",
+    "noResults": "No projects match. Try a different word or clear the filters.",
+    "seeAll": "See all {n}",
+    "viewGrid": "Grid",
+    "viewList": "List",
+    "prev": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {total}",
     "empty": "No projects yet. Be the first to start one."
+  },
+  "spotlight": {
+    "title": "In the spotlight",
+    "sub": "A few projects at a time, in focus and finished — three slots per duration, plus the community's People's Choice. Open slots fill the moment a project is ready."
   },
   "new": {
     "title": "Start a project",
@@ -49,12 +77,17 @@
     "fEmailHint": "Used to dedupe crew and hand off the project. Never shown publicly.",
     "fRole": "Your role (optional)",
     "fRoleHint": "E.g. organizer, logistics. Roles count toward readiness on longer pools.",
-    "submit": "Create project"
+    "submit": "Create project",
+    "forkingFrom": "Copying the playbook from “{title}”. Edit anything for your own city, then make it yours."
   },
   "wins": {
     "title": "Win wall",
     "sub": "Finished projects become playbooks anyone can copy and run in their own city. Fork credit tracks how far each one travels.",
-    "soon": "The playbook library lands next in the build."
+    "empty": "No finished projects yet. The first community to close one writes the first playbook.",
+    "finished": "Finished",
+    "forkCta": "Copy this playbook",
+    "copiedIn": "Copied in {n, plural, one {# city} other {# cities}}",
+    "notYetCopied": "Not copied yet — be the first city."
   },
   "pool": {
     "week": "One week",
@@ -100,6 +133,8 @@
   },
   "project": {
     "funding": "Transparent funding",
+    "forkedFromLabel": "Forked from",
+    "copiedIn": "Copied in {n, plural, one {# city} other {# cities}}",
     "outcomeHeading": "Outcome",
     "readyHeading": "Ready, waiting for a slot",
     "readySub": "This project meets every bar. It takes the next open slot in its pool, or its place in the lottery when slots are contested.",

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/Header";
 import { CrewList, type CrewMember } from "@/components/project/CrewList";
 import { JoinForm } from "@/components/project/JoinForm";
@@ -12,6 +13,7 @@ import { ShareLink } from "@/components/project/ShareLink";
 import { VotePanel } from "@/components/pc/VotePanel";
 import { StatusBadge } from "@/components/project/StatusBadge";
 import { getProjectBySlug } from "@/server/projects";
+import { getLineage, type Lineage } from "@/server/wins";
 import { loadProjectReadiness } from "@/server/readiness";
 import { votedProjectIds } from "@/server/peopleschoice";
 import type { ReadinessBar } from "@/lib/readiness";
@@ -33,6 +35,7 @@ export default async function ProjectPage({
 
   const { bars, ready } = await loadProjectReadiness(project.id);
   const hasVoted = (await votedProjectIds()).has(project.id);
+  const lineage = await getLineage(project.id, project.clonedFrom);
 
   const members: CrewMember[] = project.members.map((m) => ({
     id: m.id,
@@ -63,6 +66,7 @@ export default async function ProjectPage({
       fundingUrl={project.fundingUrl}
       ready={ready}
       hasVoted={hasVoted}
+      lineage={lineage}
       bars={bars}
       members={members}
       tasks={tasks}
@@ -90,6 +94,7 @@ type DetailProps = {
   fundingUrl: string | null;
   ready: boolean;
   hasVoted: boolean;
+  lineage: Lineage;
   bars: ReadinessBar[];
   members: CrewMember[];
   tasks: TaskView[];
@@ -118,6 +123,25 @@ function ProjectDetail(props: DetailProps) {
         <div className="mt-3">
           <ShareLink />
         </div>
+
+        {props.lineage.source || props.lineage.forkCities > 0 ? (
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-500">
+            {props.lineage.source ? (
+              <span>
+                {t("forkedFromLabel")}{" "}
+                <Link
+                  href={`/p/${props.lineage.source.slug}`}
+                  className="font-medium text-emerald-700 hover:underline dark:text-emerald-400"
+                >
+                  {props.lineage.source.title}
+                </Link>
+              </span>
+            ) : null}
+            {props.lineage.forkCities > 0 ? (
+              <span>{t("copiedIn", { n: props.lineage.forkCities })}</span>
+            ) : null}
+          </div>
+        ) : null}
 
         {props.fundingUrl ? (
           <a

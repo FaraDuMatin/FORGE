@@ -8,12 +8,15 @@ export function Header() {
   return (
     <header className="flex items-center justify-between border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
       <Link href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-        <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7 object-contain" priority />
+        <Image src="/logo.png" alt="" width={48} height={48} className="h-12 w-12 object-contain" priority />
         FORGE
       </Link>
       <nav className="flex items-center gap-4">
         <Link href="/projects" className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
           {t("projects")}
+        </Link>
+        <Link href="/spotlight" className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
+          {t("spotlight")}
         </Link>
         <Link href="/pc" className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white">
           {t("pc")}

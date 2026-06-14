@@ -11,23 +11,38 @@ import { PoolRequirements } from "./PoolRequirements";
 import { POOLS } from "@/lib/pools";
 import type { Pool } from "@/generated/prisma/client";
 
-export function NewProjectForm() {
+export type ForkPrefill = {
+  clonedFrom: string; // source project id
+  sourceTitle: string;
+  title: string;
+  goal: string;
+  pool: Pool;
+};
+
+export function NewProjectForm({ fork }: { fork?: ForkPrefill }) {
   const t = useTranslations("new");
   const tk = useTranslations();
   const locale = useLocale();
-  const [pool, setPool] = useState<Pool>("WEEK");
+  const [pool, setPool] = useState<Pool>(fork?.pool ?? "WEEK");
   const [state, action] = useActionState(createProject, initialState);
 
   return (
     <div className="grid gap-8 md:grid-cols-[1fr_18rem]">
       <form action={action} className="space-y-5">
         <input type="hidden" name="locale" value={locale} />
+        {fork ? <input type="hidden" name="clonedFrom" value={fork.clonedFrom} /> : null}
+
+        {fork ? (
+          <p className="rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
+            {t("forkingFrom", { title: fork.sourceTitle })}
+          </p>
+        ) : null}
 
         <Field label={t("fTitle")}>
-          <Input name="title" required maxLength={120} />
+          <Input name="title" required maxLength={120} defaultValue={fork?.title} />
         </Field>
         <Field label={t("fGoal")} hint={t("fGoalHint")}>
-          <Textarea name="goal" required maxLength={600} />
+          <Textarea name="goal" required maxLength={600} defaultValue={fork?.goal} />
         </Field>
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label={t("fCity")}>
