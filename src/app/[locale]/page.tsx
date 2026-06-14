@@ -43,12 +43,20 @@ function Hero() {
       <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
         {t("lead")}
       </h1>
-      <Link
-        href="/new"
-        className="mt-8 inline-block rounded-full bg-emerald-600 px-6 py-3 font-medium text-white hover:bg-emerald-700"
-      >
-        {t("startCta")}
-      </Link>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          href="/new"
+          className="inline-block rounded-full bg-emerald-600 px-6 py-3 font-medium text-white hover:bg-emerald-700"
+        >
+          {t("startCta")}
+        </Link>
+        <Link
+          href="/projects"
+          className="inline-block rounded-full border border-neutral-300 px-6 py-3 font-medium text-neutral-900 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-800"
+        >
+          {t("joinCta")}
+        </Link>
+      </div>
     </section>
   );
 }

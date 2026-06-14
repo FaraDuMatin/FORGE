@@ -7,7 +7,8 @@
     "home": "Accueil",
     "start": "Lancer un projet",
     "wins": "Mur des réussites",
-    "pc": "Choix du public"
+    "pc": "Choix du public",
+    "projects": "Projets"
   },
   "home": {
     "tagline": "Personne n'agit seul.",
@@ -22,7 +23,15 @@
     "pcVoteNow": "Votez pour le choix de la semaine",
     "pcSeeAll": "Tout voir et voter",
     "winWallTeaser": "Voyez ce que les communautés ont déjà accompli",
-    "startCta": "Lancer un projet"
+    "startCta": "Lancer un projet",
+    "joinCta": "Rejoindre un projet"
+  },
+  "directory": {
+    "title": "Tous les projets",
+    "sub": "Tous les projets sur FORGE — sous les projecteurs, prêts et en attente, en préparation, ou terminés. Ouvrez-en un pour rejoindre l'équipe ou prendre une tâche.",
+    "ready": "Prêt, en attente d'une place",
+    "gettingReady": "En préparation",
+    "empty": "Aucun projet pour l'instant. Soyez le premier à en lancer un."
   },
   "new": {
     "title": "Lancer un projet",
@@ -99,6 +108,7 @@
     "status": {
       "QUEUED": "En file",
       "SPOTLIGHT": "Sous les projecteurs",
+      "PEOPLES_CHOICE": "Choix du public",
       "CLOSED": "Terminé",
       "ADOPTABLE": "Cherche un mainteneur",
       "CANCELLED": "Annulé"
@@ -141,24 +151,23 @@
   "pc": {
     "eyebrow": "Une place joker",
     "title": "Choix du public",
-    "lead": "Toutes les autres places se gagnent par la préparation et un tirage équitable — l'influence ne les achète pas. Cette place est l'exception : le vote libre de la communauté. Une voix par personne et par semaine, et vous ne pouvez soutenir qu'un projet déjà prêt.",
-    "cycleLabel": "Cette semaine · {cycle}",
-    "holderHeading": "En tête cette semaine",
-    "noHolder": "Aucune voix cette semaine. Soyez le premier à soutenir un projet.",
+    "lead": "Toutes les autres places se gagnent par la préparation et un tirage équitable — l'influence ne les achète pas. Cette place est l'exception : le vote libre de la communauté. Soutenez les projets prêts qui vous tiennent à cœur (une voix chacun) ; quand la place est libre, le projet le plus soutenu la prend et la garde jusqu'à ce qu'il soit terminé.",
+    "holderHeading": "Sous les projecteurs en ce moment",
+    "noHolder": "La place est libre. Un projet prêt doit réunir {n} voix pour la prendre — soutenez-en un ci-dessous.",
     "eligibleHeading": "Prêts et en lice",
     "noneEligible": "Aucun projet n'est prêt pour le Choix du public en ce moment. Revenez quand d'autres projets auront atteint leurs critères.",
     "votes": "{n, plural, =0 {Aucune voix} one {# voix} other {# voix}}",
-    "votersLine": "{names} ont voté",
-    "votersMore": "{names} +{n} ont voté",
+    "votersLine": "{names} ont soutenu",
+    "votersMore": "{names} +{n} ont soutenu",
     "voteName": "Votre nom",
     "voteEmail": "Votre courriel",
-    "voteSubmit": "Voter",
-    "votedThisWeek": "Vous avez utilisé votre voix cette semaine. Les voix sont réinitialisées la semaine prochaine.",
+    "voteSubmit": "Soutenir ce projet",
+    "votedThisProject": "Vous avez soutenu ce projet. Merci pour votre voix.",
     "votedThanks": "Voix comptée — merci pour votre soutien.",
     "backHeading": "Soutenir ce projet au Choix du public",
-    "backSub": "Ce projet est prêt. Donnez-lui votre voix de la semaine pour le pousser vers la place joker.",
+    "backSub": "Ce projet est prêt. Ajoutez votre voix pour le pousser vers la place joker.",
     "explainerHeading": "Comment fonctionne le Choix du public",
-    "explainer": "Seuls les projets prêts (objectif réel, équipe, tâches, une entrée de journal) peuvent recevoir des voix, pour qu'un vote ne puisse jamais propulser un projet vide sous les projecteurs. Le projet prêt le plus voté tient la place ; en cas d'égalité, c'est celui qui attend depuis le plus longtemps. Tout se réinitialise chaque semaine, et c'est la seule place qu'un steward peut annuler."
+    "explainer": "Seuls les projets prêts (objectif réel, équipe, tâches, une entrée de journal) peuvent être soutenus, pour qu'un vote ne puisse jamais propulser un projet vide sous les projecteurs. Vous avez une voix par projet, et les voix ne sont jamais réinitialisées. Quand la place est libre, le projet prêt le plus soutenu la prend dès qu'il atteint au moins {n} voix — et la garde jusqu'à ce qu'il soit terminé. En cas d'égalité en tête, on attend d'autres voix pour départager. C'est la seule place qu'un steward peut annuler."
   },
   "succession": {
     "successorHeading": "Désigner un successeur",
@@ -196,8 +205,9 @@
       "notAdoptable": "Ce projet n'est pas ouvert à l'adoption."
     },
     "pc": {
-      "voted": "Vous avez déjà utilisé votre voix cette semaine. Les voix sont réinitialisées la semaine prochaine.",
-      "ineligible": "Ce projet n'est pas éligible au Choix du public pour le moment."
+      "voted": "Vous avez déjà soutenu ce projet.",
+      "ineligible": "Ce projet n'est pas éligible au Choix du public pour le moment.",
+      "failed": "Une erreur s'est produite lors du vote. Veuillez réessayer."
     }
   }
 }

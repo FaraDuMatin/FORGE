@@ -25,7 +25,7 @@ export function VotePanel({
   const [state, action] = useActionState(castVote, initialState);
 
   if (hasVoted && !state.ok) {
-    return <p className="text-sm text-neutral-500">{t("votedThisWeek")}</p>;
+    return <p className="text-sm text-neutral-500">{t("votedThisProject")}</p>;
   }
   if (state.ok) {
     return <FormSuccess message={t("votedThanks")} />;

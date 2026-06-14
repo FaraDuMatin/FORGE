@@ -23,7 +23,9 @@ export async function getSpotlights(): Promise<{ byPool: Record<Pool, SpotlightC
 
   try {
     const rows = await prisma.project.findMany({
-      where: { status: "SPOTLIGHT" },
+      // The People's Choice holder is also SPOTLIGHT but lives in its own slot,
+      // so it must not appear in the normal pool grid.
+      where: { status: "SPOTLIGHT", isPeoplesChoice: false },
       select: { slug: true, title: true, city: true, pool: true, isPeoplesChoice: true },
       orderBy: { updatedAt: "desc" },
     });

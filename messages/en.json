@@ -7,7 +7,8 @@
     "home": "Home",
     "start": "Start a project",
     "wins": "Win wall",
-    "pc": "People's Choice"
+    "pc": "People's Choice",
+    "projects": "Projects"
   },
   "home": {
     "tagline": "Nobody acts alone.",
@@ -22,7 +23,15 @@
     "pcVoteNow": "Vote for this week's wildcard",
     "pcSeeAll": "See all and vote",
     "winWallTeaser": "See what communities already finished",
-    "startCta": "Start a project"
+    "startCta": "Start a project",
+    "joinCta": "Join a project"
+  },
+  "directory": {
+    "title": "All projects",
+    "sub": "Every project on FORGE — in the spotlight, ready and waiting, getting ready, or finished. Open one to join the crew or claim a task.",
+    "ready": "Ready, waiting for a slot",
+    "gettingReady": "Getting ready",
+    "empty": "No projects yet. Be the first to start one."
   },
   "new": {
     "title": "Start a project",
@@ -99,6 +108,7 @@
     "status": {
       "QUEUED": "Queued",
       "SPOTLIGHT": "In the spotlight",
+      "PEOPLES_CHOICE": "People's Choice",
       "CLOSED": "Finished",
       "ADOPTABLE": "Looking for a maintainer",
       "CANCELLED": "Cancelled"
@@ -141,24 +151,23 @@
   "pc": {
     "eyebrow": "One wildcard slot",
     "title": "People's Choice",
-    "lead": "Every other spotlight is earned by readiness and a fair lottery — reach can't buy them. This one slot is the exception: the community's free vote. One vote per person each week, and you can only back a project that's already ready.",
-    "cycleLabel": "This week · {cycle}",
-    "holderHeading": "Leading this week",
-    "noHolder": "No votes yet this week. Be the first to back a project.",
+    "lead": "Every other spotlight is earned by readiness and a fair lottery — reach can't buy them. This one slot is the exception: the community's free vote. Back the ready projects you believe in (one vote each); when the slot is free, the most-backed project takes it and keeps it until it finishes.",
+    "holderHeading": "In the spotlight now",
+    "noHolder": "The slot is open. A ready project needs {n} votes to claim it — back one below.",
     "eligibleHeading": "Ready and in the running",
     "noneEligible": "No projects are ready for People's Choice right now. Check back once more projects hit their readiness bars.",
     "votes": "{n, plural, =0 {No votes yet} one {# vote} other {# votes}}",
-    "votersLine": "{names} voted",
-    "votersMore": "{names} +{n} voted",
+    "votersLine": "{names} backed this",
+    "votersMore": "{names} +{n} backed this",
     "voteName": "Your name",
     "voteEmail": "Your email",
-    "voteSubmit": "Cast my vote",
-    "votedThisWeek": "You've used your vote this week. Votes reset next week.",
+    "voteSubmit": "Back this project",
+    "votedThisProject": "You've backed this project. Thanks for your vote.",
     "votedThanks": "Vote counted — thanks for backing this one.",
     "backHeading": "Back this for People's Choice",
-    "backSub": "This project is ready. Give it your weekly vote to push it toward the wildcard spotlight.",
+    "backSub": "This project is ready. Add your vote to push it toward the wildcard spotlight.",
     "explainerHeading": "How People's Choice works",
-    "explainer": "Only ready projects (real goal, crew, tasks, a build-log entry) can be voted for, so votes can never push an empty project into the spotlight. The most-voted ready project holds the slot; ties go to the one that's been waiting longest. It resets every week, and it's the only slot a steward can cancel."
+    "explainer": "Only ready projects (real goal, crew, tasks, a build-log entry) can be backed, so votes can never push an empty project into the spotlight. You get one vote per project, and votes never reset. When the slot is free, the most-backed ready project takes it once it has at least {n} votes — and keeps it until the project finishes. A tie at the top waits for more votes to break it. It's the only slot a steward can cancel."
   },
   "succession": {
     "successorHeading": "Name a successor",
@@ -196,8 +205,9 @@
       "notAdoptable": "This project isn't open for adoption."
     },
     "pc": {
-      "voted": "You've already used your vote this week. Votes reset next week.",
-      "ineligible": "This project isn't eligible for People's Choice right now."
+      "voted": "You've already backed this project.",
+      "ineligible": "This project isn't eligible for People's Choice right now.",
+      "failed": "Something went wrong casting your vote. Please try again."
     }
   }
 }

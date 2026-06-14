@@ -3,13 +3,13 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
-import { isoWeek } from "@/lib/week";
 import { loadProjectReadiness } from "@/server/readiness";
+import { maintainPeoplesChoice } from "@/server/peopleschoice";
 import { field, email, type ActionState } from "./types";
 
-// One free People's Choice vote per email per weekly cycle — and, once cast, it's
-// final for the week (no moving it). The unique(email, cycle) constraint is the
-// real guard; the cookie just lets the UI lock instantly without a round-trip.
+// One vote per email per project, cumulative (no reset). After the vote we re-run
+// the People's Choice selection: if this pushes a project past the threshold and
+// the spot is free, it claims it. unique(email, projectId) is the real guard.
 export async function castVote(_prev: ActionState, fd: FormData): Promise<ActionState> {
   const projectId = field(fd, "projectId");
   const slug = field(fd, "slug");
@@ -19,28 +19,36 @@ export async function castVote(_prev: ActionState, fd: FormData): Promise<Action
 
   if (!projectId || !name || !voterEmail) return { error: "form.missing" };
 
-  // Eligibility is rechecked server-side: you can only back a project that is
-  // READY and still queued (not already in a spotlight slot).
+  // Eligibility: you can only back a project that is READY and still queued (not
+  // already in a normal slot, not the current People's Choice holder).
   const project = await prisma.project.findUnique({
     where: { id: projectId },
-    select: { status: true },
+    select: { status: true, isPeoplesChoice: true },
   });
   if (!project) return { error: "notfound" };
-  if (project.status !== "QUEUED") return { error: "pc.ineligible" };
+  if (project.status !== "QUEUED" || project.isPeoplesChoice) return { error: "pc.ineligible" };
   const { ready } = await loadProjectReadiness(projectId);
   if (!ready) return { error: "pc.ineligible" };
 
-  const cycle = isoWeek();
   try {
-    await prisma.pCVote.create({ data: { projectId, email: voterEmail, name, cycle } });
-  } catch {
-    // unique(email, cycle) — already voted this week, anywhere.
-    return { error: "pc.voted" };
+    await prisma.pCVote.create({ data: { projectId, email: voterEmail, name } });
+  } catch (e) {
+    // Only a unique-constraint hit (P2002) means "already backed this project".
+    // Anything else is a real failure — surface it instead of hiding it.
+    if (e && typeof e === "object" && "code" in e && (e as { code?: string }).code === "P2002") {
+      return { error: "pc.voted" };
+    }
+    console.error("castVote: pCVote.create failed", e);
+    return { error: "pc.failed" };
   }
 
-  // Lock this browser for the cycle (UX only; the DB constraint is the real lock).
+  await maintainPeoplesChoice();
+
+  // Remember this project on this browser so the button locks without a round-trip.
   const jar = await cookies();
-  jar.set("pc_voted", cycle, { path: "/", maxAge: 60 * 60 * 24 * 8, sameSite: "lax" });
+  const current = (jar.get("pc_voted")?.value ?? "").split(",").filter(Boolean);
+  if (!current.includes(projectId)) current.push(projectId);
+  jar.set("pc_voted", current.join(","), { path: "/", maxAge: 60 * 60 * 24 * 90, sameSite: "lax" });
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/pc`);

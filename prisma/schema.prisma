@@ -119,10 +119,11 @@ model PCVote {
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   email     String
   name      String // voter's first name, shown in the social-proof row (emails stay private)
-  cycle     String // ISO week string, e.g. "2026-W24", derived from now() at write time
   createdAt DateTime @default(now())
 
-  // one vote per email per weekly cycle
-  @@unique([email, cycle])
-  @@index([projectId, cycle])
+  // One vote per email per project. Votes are cumulative (no cycle/reset): the most-
+  // voted eligible project takes the People's Choice spot when it's free, and holds
+  // it until finished. See src/server/peopleschoice.ts.
+  @@unique([email, projectId])
+  @@index([projectId])
 }

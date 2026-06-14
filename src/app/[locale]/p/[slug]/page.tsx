@@ -10,9 +10,10 @@ import { ReadinessChecklist } from "@/components/project/ReadinessPanel";
 import { AdoptForm } from "@/components/project/AdoptForm";
 import { ShareLink } from "@/components/project/ShareLink";
 import { VotePanel } from "@/components/pc/VotePanel";
+import { StatusBadge } from "@/components/project/StatusBadge";
 import { getProjectBySlug } from "@/server/projects";
 import { loadProjectReadiness } from "@/server/readiness";
-import { hasVotedThisCycle } from "@/server/peopleschoice";
+import { votedProjectIds } from "@/server/peopleschoice";
 import type { ReadinessBar } from "@/lib/readiness";
 import type { Pool, ProjectStatus } from "@/generated/prisma/client";
 
@@ -31,7 +32,7 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const { bars, ready } = await loadProjectReadiness(project.id);
-  const hasVoted = await hasVotedThisCycle();
+  const hasVoted = (await votedProjectIds()).has(project.id);
 
   const members: CrewMember[] = project.members.map((m) => ({
     id: m.id,
@@ -56,6 +57,7 @@ export default async function ProjectPage({
       country={project.country}
       pool={project.pool}
       status={project.status}
+      isPeoplesChoice={project.isPeoplesChoice}
       poolLabelKey={poolLabelKey(project.pool)}
       outcome={project.outcome}
       fundingUrl={project.fundingUrl}
@@ -82,6 +84,7 @@ type DetailProps = {
   country: string;
   pool: Pool;
   status: ProjectStatus;
+  isPeoplesChoice: boolean;
   poolLabelKey: string;
   outcome: string | null;
   fundingUrl: string | null;
@@ -103,7 +106,7 @@ function ProjectDetail(props: DetailProps) {
       <Header />
       <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
         <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
-          <StatusBadge status={props.status} />
+          <StatusBadge status={props.status} isPeoplesChoice={props.isPeoplesChoice} />
           <span>{tk(props.poolLabelKey)}</span>
           <span aria-hidden>·</span>
           <span>{props.city}, {props.country}</span>
@@ -175,18 +178,3 @@ function ProjectDetail(props: DetailProps) {
   );
 }
 
-function StatusBadge({ status }: { status: ProjectStatus }) {
-  const t = useTranslations("project.status");
-  const styles: Record<ProjectStatus, string> = {
-    QUEUED: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300",
-    SPOTLIGHT: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
-    CLOSED: "bg-neutral-200 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200",
-    ADOPTABLE: "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-    CANCELLED: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300",
-  };
-  return (
-    <span className={`rounded-full px-2 py-0.5 font-medium ${styles[status]}`}>
-      {t(status)}
-    </span>
-  );
-}

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { newMaintainerToken } from "@/lib/token";
 import { runAllocation } from "@/server/allocate";
+import { maintainPeoplesChoice } from "@/server/peopleschoice";
 import { maintainerProject } from "@/server/auth";
 import { field, email, type ActionState } from "./types";
 
@@ -91,6 +92,8 @@ export async function stepBack(_prev: ActionState, fd: FormData): Promise<Action
     data: { status: "ADOPTABLE" },
   });
   await runAllocation(project.pool);
+  // If this was the People's Choice holder, the spot is now free — refill it.
+  await maintainPeoplesChoice();
 
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/p/${slug}/manage`);

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { slugify } from "@/lib/slug";
 import { runAllocation } from "@/server/allocate";
+import { maintainPeoplesChoice } from "@/server/peopleschoice";
 import { maintainerProject } from "@/server/auth";
 import { field, email, type ActionState } from "./types";
 import type { Pool } from "@/generated/prisma/client";
@@ -68,6 +69,8 @@ export async function closeProject(_prev: ActionState, fd: FormData): Promise<Ac
   });
 
   await runAllocation(project.pool);
+  // If this was the People's Choice holder, the spot is now free — refill it.
+  await maintainPeoplesChoice();
   revalidatePath(`/${locale}`);
   revalidatePath(`/${locale}/p/${slug}`);
   revalidatePath(`/${locale}/p/${slug}/manage`);

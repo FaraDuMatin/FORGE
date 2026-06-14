@@ -3,7 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Header } from "@/components/Header";
 import { Link } from "@/i18n/navigation";
 import { VotePanel } from "@/components/pc/VotePanel";
-import { loadPeoplesChoice, hasVotedThisCycle, type PCCandidate } from "@/server/peopleschoice";
+import { loadPeoplesChoice, votedProjectIds, type PCCandidate } from "@/server/peopleschoice";
 
 // Live: the holder and counts change with every vote.
 export const dynamic = "force-dynamic";
@@ -16,24 +16,27 @@ export default async function PeoplesChoicePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { cycle, holder, candidates } = await loadPeoplesChoice();
-  const hasVoted = await hasVotedThisCycle();
+  const { holder, candidates, threshold } = await loadPeoplesChoice();
+  const voted = await votedProjectIds();
 
-  return <PeoplesChoiceView cycle={cycle} holder={holder} candidates={candidates} hasVoted={hasVoted} />;
+  return (
+    <PeoplesChoiceView holder={holder} candidates={candidates} threshold={threshold} votedIds={[...voted]} />
+  );
 }
 
 function PeoplesChoiceView({
-  cycle,
   holder,
   candidates,
-  hasVoted,
+  threshold,
+  votedIds,
 }: {
-  cycle: string;
   holder: PCCandidate | null;
   candidates: PCCandidate[];
-  hasVoted: boolean;
+  threshold: number;
+  votedIds: string[];
 }) {
   const t = useTranslations("pc");
+  const voted = new Set(votedIds);
 
   return (
     <>
@@ -42,17 +45,16 @@ function PeoplesChoiceView({
         <p className="text-sm font-medium uppercase tracking-widest text-emerald-600">{t("eyebrow")}</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight">{t("title")}</h1>
         <p className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">{t("lead")}</p>
-        <p className="mt-2 text-xs uppercase tracking-wide text-neutral-400">{t("cycleLabel", { cycle })}</p>
 
         <section className="mt-8">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-emerald-600">{t("holderHeading")}</h2>
           {holder ? (
             <div className="mt-3">
-              <CandidateCard candidate={holder} hasVoted={hasVoted} highlight />
+              <CandidateCard candidate={holder} hasVoted={false} votable={false} highlight />
             </div>
           ) : (
             <p className="mt-3 rounded-lg border border-dashed border-neutral-300 p-4 text-sm text-neutral-500 dark:border-neutral-700">
-              {t("noHolder")}
+              {t("noHolder", { n: threshold })}
             </p>
           )}
         </section>
@@ -64,7 +66,7 @@ function PeoplesChoiceView({
           ) : (
             <div className="mt-3 space-y-4">
               {candidates.map((c) => (
-                <CandidateCard key={c.id} candidate={c} hasVoted={hasVoted} />
+                <CandidateCard key={c.id} candidate={c} hasVoted={voted.has(c.id)} votable />
               ))}
             </div>
           )}
@@ -72,7 +74,7 @@ function PeoplesChoiceView({
 
         <section className="mt-12 border-t border-neutral-200 pt-6 dark:border-neutral-800">
           <h2 className="text-sm font-semibold">{t("explainerHeading")}</h2>
-          <p className="mt-2 text-sm text-neutral-500">{t("explainer")}</p>
+          <p className="mt-2 text-sm text-neutral-500">{t("explainer", { n: threshold })}</p>
         </section>
       </main>
     </>
@@ -82,10 +84,12 @@ function PeoplesChoiceView({
 function CandidateCard({
   candidate,
   hasVoted,
+  votable,
   highlight = false,
 }: {
   candidate: PCCandidate;
   hasVoted: boolean;
+  votable: boolean;
   highlight?: boolean;
 }) {
   const t = useTranslations("pc");
@@ -119,9 +123,11 @@ function CandidateCard({
         </p>
       ) : null}
 
-      <div className="mt-4 border-t border-neutral-200 pt-4 dark:border-neutral-800">
-        <VotePanel projectId={candidate.id} slug={candidate.slug} hasVoted={hasVoted} />
-      </div>
+      {votable ? (
+        <div className="mt-4 border-t border-neutral-200 pt-4 dark:border-neutral-800">
+          <VotePanel projectId={candidate.id} slug={candidate.slug} hasVoted={hasVoted} />
+        </div>
+      ) : null}
     </div>
   );
 }
