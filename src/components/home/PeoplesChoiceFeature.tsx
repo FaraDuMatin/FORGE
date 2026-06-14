@@ -15,7 +15,7 @@ export function PeoplesChoiceFeature({ holder }: { holder: PCCandidate | null })
       {holder ? (
         <Link
           href={`/p/${holder.slug}`}
-          className="mt-3 block rounded-2xl border border-neutral-200 bg-white bg-[radial-gradient(ellipse_45%_60%_at_0%_100%,rgba(16,185,129,0.14),transparent)] p-6 shadow-sm ring-1 ring-emerald-500/15 transition hover:ring-emerald-400/40 dark:border-neutral-800 dark:bg-neutral-950"
+          className="mt-3 block rounded-2xl border border-neutral-200 bg-white bg-[radial-gradient(ellipse_45%_60%_at_100%_0%,rgba(16,185,129,0.14),transparent)] p-6 shadow-sm ring-1 ring-emerald-500/15 transition hover:ring-emerald-400/40 dark:border-neutral-800 dark:bg-neutral-950"
         >
           <span className="inline-block rounded-full bg-emerald-600 px-2 py-0.5 text-xs font-medium text-white">
             {t("pcBadge")}

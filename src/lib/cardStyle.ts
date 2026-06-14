@@ -5,13 +5,13 @@ import type { ProjectStatus } from "@/generated/prisma/client";
 // in server or client components.
 //
 // Spotlight = a normal card (white / near-black) with a SLIGHT emerald glow in the
-// bottom-left corner — not a fill. Two knobs to tune the glow:
+// top-right corner — like light cast from above, not a fill. Two knobs to tune it:
 //   • intensity  = the rgba alpha (last number, e.g. 0.10). Lower = fainter.
-//   • size/reach = the ellipse "45% 55%" + "at 0% 100%". Smaller % = tighter corner.
+//   • size/reach = the ellipse "45% 55%" + "at 100% 0%". Smaller % = tighter corner.
 // Border is intentionally faint neutral (the glow carries the colour, not the edge).
 const BASE = "rounded-xl border p-4 transition";
-const GLOW = "bg-[radial-gradient(ellipse_42%_55%_at_0%_100%,rgba(16,185,129,0.10),transparent)]";
-const GLOW_STRONG = "bg-[radial-gradient(ellipse_48%_60%_at_0%_100%,rgba(16,185,129,0.15),transparent)]";
+const GLOW = "bg-[radial-gradient(ellipse_42%_55%_at_100%_0%,rgba(16,185,129,0.10),transparent)]";
+const GLOW_STRONG = "bg-[radial-gradient(ellipse_48%_60%_at_100%_0%,rgba(16,185,129,0.15),transparent)]";
 
 export function cardSurface(status: ProjectStatus, isPeoplesChoice = false): string {
   // People's Choice: slightly stronger glow + a faint ring.

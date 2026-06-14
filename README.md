@@ -79,14 +79,14 @@ messages/            en.json, fr.json
 
 Note to self for tuning the spotlight look.
 
-**Glow** — a slight emerald glow in the bottom-left corner marks a spotlight card.
+**Glow** — a slight emerald glow in the top-right corner (light cast from above) marks a spotlight card.
 - All project cards (home strip, `/spotlight`, `/projects`): [`src/lib/cardStyle.ts`](src/lib/cardStyle.ts), constants `GLOW` (spotlight) + `GLOW_STRONG` (People's Choice).
-- Big home PC card: [`src/components/home/PeoplesChoiceFeature.tsx`](src/components/home/PeoplesChoiceFeature.tsx) (its own inline gradient).
+- Big home PC card: [`src/components/home/PeoplesChoiceFeature.tsx`](src/components/home/PeoplesChoiceFeature.tsx) and the maintainer-panel header ([`manage/page.tsx`](src/app/[locale]/p/[slug]/manage/page.tsx)) carry their own inline gradient.
 
-Inside each `radial-gradient(ellipse 42% 55% at 0% 100%, rgba(16,185,129,0.10), transparent)`:
+Inside each `radial-gradient(ellipse 42% 55% at 100% 0%, rgba(16,185,129,0.10), transparent)`:
 - **Intensity** = the last number `0.10` → lower = fainter, higher = stronger.
 - **Reach / size** = `42% 55%` → smaller = tighter corner spot.
-- **Corner** = `at 0% 100%` = bottom-left (`100% 100%` = bottom-right, etc.).
+- **Corner** = `at 100% 0%` = top-right (`0% 100%` = bottom-left, `100% 100%` = bottom-right, etc.).
 
 Current values: spotlight `0.10 / 42% 55%`, PC card `0.15 / 48% 60%`, big PC card `0.14 / 45% 60%`.
 

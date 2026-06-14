@@ -105,12 +105,12 @@ function Dashboard({
       <Header />
       <RememberProject slug={slug} title={title} token={ctx.token} />
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-10 px-6 py-10">
-        <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+        <div className="rounded-xl border border-neutral-200 bg-white bg-[radial-gradient(ellipse_42%_55%_at_100%_0%,rgba(16,185,129,0.10),transparent)] p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-950">
+          <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
             <Wrench size={14} />
             {t("eyebrow")}
-          </span>
-          <h1 className="mt-3 text-2xl font-bold tracking-tight">{title}</h1>
+          </p>
+          <h1 className="mt-2 text-2xl font-bold tracking-tight">{title}</h1>
           <Link href={`/p/${slug}`} className="mt-1 inline-block text-sm text-neutral-600 underline-offset-2 hover:underline dark:text-neutral-400">
             {t("viewPublic")}
           </Link>
