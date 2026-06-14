@@ -14,6 +14,7 @@ import { VotePanel } from "@/components/pc/VotePanel";
 import { StatusBadge } from "@/components/project/StatusBadge";
 import { getProjectBySlug } from "@/server/projects";
 import { getLineage, type Lineage } from "@/server/wins";
+import { youtubeEmbedUrl } from "@/lib/videoEmbed";
 import { loadProjectReadiness } from "@/server/readiness";
 import { votedProjectIds } from "@/server/peopleschoice";
 import type { ReadinessBar } from "@/lib/readiness";
@@ -64,6 +65,7 @@ export default async function ProjectPage({
       poolLabelKey={poolLabelKey(project.pool)}
       outcome={project.outcome}
       fundingUrl={project.fundingUrl}
+      embedUrl={youtubeEmbedUrl(project.videoUrl)}
       ready={ready}
       hasVoted={hasVoted}
       lineage={lineage}
@@ -92,6 +94,7 @@ type DetailProps = {
   poolLabelKey: string;
   outcome: string | null;
   fundingUrl: string | null;
+  embedUrl: string | null;
   ready: boolean;
   hasVoted: boolean;
   lineage: Lineage;
@@ -120,9 +123,22 @@ function ProjectDetail(props: DetailProps) {
         <h1 className="mt-3 text-3xl font-bold tracking-tight">{props.title}</h1>
         <p className="mt-3 whitespace-pre-wrap text-neutral-700 dark:text-neutral-300">{props.goal}</p>
 
-        <div className="mt-3">
+        <div className="mt-4">
           <ShareLink />
         </div>
+
+        {props.embedUrl ? (
+          <div className="mt-6 aspect-video w-full overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800">
+            <iframe
+              src={props.embedUrl}
+              title={props.title}
+              loading="lazy"
+              allow="encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+              className="h-full w-full"
+            />
+          </div>
+        ) : null}
 
         {props.lineage.source || props.lineage.forkCities > 0 ? (
           <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-500">
@@ -141,6 +157,32 @@ function ProjectDetail(props: DetailProps) {
               <span>{t("copiedIn", { n: props.lineage.forkCities })}</span>
             ) : null}
           </div>
+        ) : null}
+
+        {props.lineage.forks.length > 0 ? (
+          <section className="mt-6 rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
+            <h2 className="text-sm font-semibold">
+              {t("forkFamilyHeading", { n: props.lineage.forkCities })}
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {props.lineage.forks.map((fork) => (
+                <Link
+                  key={fork.slug}
+                  href={`/p/${fork.slug}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-3 py-1 text-sm transition hover:border-emerald-400 dark:border-neutral-800"
+                >
+                  <span>{fork.city}</span>
+                  <StatusBadge status={fork.status} />
+                </Link>
+              ))}
+            </div>
+            <p className="mt-3 text-xs text-neutral-500">
+              {t("forkTogether", {
+                tasks: props.lineage.forkTasksDone,
+                updates: props.lineage.forkUpdates,
+              })}
+            </p>
+          </section>
         ) : null}
 
         {props.fundingUrl ? (
@@ -193,12 +235,33 @@ function ProjectDetail(props: DetailProps) {
 
         <div className="mt-10 space-y-10">
           <CrewList members={props.members} />
-          <TaskBoard slug={props.slug} tasks={props.tasks} />
+          <div>
+            {props.tasks.length > 0 ? <TaskProgress tasks={props.tasks} /> : null}
+            <TaskBoard slug={props.slug} tasks={props.tasks} />
+          </div>
           <BuildLog entries={props.updates} />
           {props.status !== "CLOSED" ? <JoinForm projectId={props.id} slug={props.slug} /> : null}
         </div>
       </main>
     </>
+  );
+}
+
+function TaskProgress({ tasks }: { tasks: TaskView[] }) {
+  const t = useTranslations("project");
+  const done = tasks.filter((task) => task.status === "DONE").length;
+  const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+
+  return (
+    <div className="mb-4">
+      <div className="flex items-center justify-between text-xs text-neutral-500">
+        <span>{t("taskProgress", { done, total: tasks.length })}</span>
+        <span>{pct}%</span>
+      </div>
+      <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
+        <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${pct}%` }} />
+      </div>
+    </div>
   );
 }
 

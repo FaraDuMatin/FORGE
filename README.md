@@ -64,10 +64,12 @@ npm run dev              # http://localhost:3000
 
 ```
 src/
-  app/[locale]/      routes: / , /new , /wins , /p/[slug] , /p/[slug]/manage
-  lib/               db (Neon adapter), allocation, readiness, pools, week, home
+  app/[locale]/      routes: / , /new , /projects , /spotlight , /pc , /wins , /p/[slug] , /p/[slug]/manage
+  app/api/           projects/search route handler (JSON, for the directory type-ahead)
+  lib/               db (Neon adapter), allocation, readiness, pools, week, home, directory, cardStyle, token
+  server/            server-only data + actions (directory search, wins, peopleschoice, succession)
   i18n/              next-intl routing / request / navigation
-  components/        Header, LocaleSwitch, shared UI
+  components/        Header, LocaleSwitch, home/, project/, pc/, manage/, ui/
   generated/prisma/  Prisma client (generated, gitignored)
 prisma/schema.prisma five models: Project, Member, Task, Update, PCVote
 messages/            en.json, fr.json
@@ -94,7 +96,7 @@ Current values: spotlight `0.10 / 42% 55%`, PC card `0.15 / 48% 60%`, big PC car
 
 ## Roadmap / deferred
 
-- **Magic-link vote verification.** People's Choice voting is honor-system in the MVP: email + cookie/localStorage dedup, bounded by READY-only eligibility, a single weekly slot, weekly reset, and steward cancellation. A later upgrade verifies the voter's email via a magic link (verification only — no accounts, no user table) to harden one-person-one-vote without adding a login wall. We deliberately do **not** gate voting behind joining a project (no forced participation).
+- **Magic-link vote verification.** People's Choice voting is honor-system in the MVP: email + cookie dedup (one vote per email per project), bounded by READY-only eligibility, a 3-vote threshold to claim the slot, a persistent holder that keeps the slot until it finishes (tie at the top waits for more votes), and steward cancellation. A later upgrade verifies the voter's email via a magic link (verification only — no accounts, no user table) to harden one-person-one-vote without adding a login wall. We deliberately do **not** gate voting behind joining a project (no forced participation).
 - **Steward / admin console.** A privileged view to confirm a project is genuinely READY (real crew, real tasks) and to cancel spam or off-topic People's Choice entries. Deferred — it's an identity/permissions shift, not a small add.
 - **Account migration (if ever).** tokens-in-URL → Better Auth (self-hosted, data stays in our Postgres; preferred over Clerk for data custody). ~1–2 days, low data-risk because email is already the universal key, so backfill is a clean join. Kept out by choice — token-in-URL *is* the minimal-data Equitable story.
 

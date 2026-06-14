@@ -22,10 +22,15 @@ async function main() {
     return;
   }
 
+  // Tokens rotate: every reseed recreates rows with new tokens, and handoff/adopt
+  // rotate them too. Any link copied before that dies — re-run this AFTER seeding.
+  console.log("Tokens rotate on every reseed/handoff. Re-run `npm run db:links` after seeding.");
+
   for (const p of projects) {
     const tag = p.isPeoplesChoice ? "PEOPLES_CHOICE" : p.status;
     console.log(`\n${p.title}  [${tag}]`);
     console.log(`  ${BASE}/en/p/${p.slug}/manage?t=${p.maintainerToken}`);
+    console.log(`  token: ${p.maintainerToken}`); // paste into the in-app /me resume field
   }
   console.log("");
 }

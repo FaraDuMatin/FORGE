@@ -7,6 +7,7 @@ import { slugify } from "@/lib/slug";
 import { runAllocation } from "@/server/allocate";
 import { maintainPeoplesChoice } from "@/server/peopleschoice";
 import { maintainerProject } from "@/server/auth";
+import { youtubeEmbedUrl } from "@/lib/videoEmbed";
 import { field, email, type ActionState } from "./types";
 import type { Pool } from "@/generated/prisma/client";
 
@@ -84,4 +85,50 @@ export async function closeProject(_prev: ActionState, fd: FormData): Promise<Ac
   revalidatePath(`/${locale}/p/${slug}`);
   revalidatePath(`/${locale}/p/${slug}/manage`);
   return { ok: true };
+}
+
+// Attach (or clear) a YouTube link. Stored raw; parsed to a nocookie embed at
+// render. A non-empty link that doesn't parse as YouTube is rejected.
+export async function setVideoUrl(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  const projectId = field(fd, "projectId");
+  const token = field(fd, "token");
+  const locale = field(fd, "locale") || "en";
+  const slug = field(fd, "slug");
+  const raw = field(fd, "videoUrl");
+
+  const project = await maintainerProject(projectId, token);
+  if (!project) return { error: "auth" };
+  if (raw && !youtubeEmbedUrl(raw)) return { error: "form.video" };
+
+  await prisma.project.update({
+    where: { id: projectId },
+    data: { videoUrl: raw || null },
+  });
+
+  revalidatePath(`/${locale}/p/${slug}`);
+  revalidatePath(`/${locale}/p/${slug}/manage`);
+  return { ok: true };
+}
+
+// Re-enter a project you maintain from the "/me" page: paste the secret token or
+// the full manage URL. We pull the token out, look it up (it's unique), and send
+// you to the canonical manage URL — so a link pasted in the wrong locale/slug
+// still lands correctly. Reveals nothing without the secret token.
+export async function resumeProject(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  const locale = field(fd, "locale") || "en";
+  const input = field(fd, "key");
+  if (!input) return { error: "form.missing" };
+
+  // Accept a pasted URL (?t=…) or a bare token.
+  let token = input;
+  const match = input.match(/[?&]t=([^&\s]+)/);
+  if (match) token = decodeURIComponent(match[1]);
+
+  const project = await prisma.project.findUnique({
+    where: { maintainerToken: token },
+    select: { slug: true },
+  });
+  if (!project) return { error: "resume.notfound" };
+
+  redirect(`/${locale}/p/${project.slug}/manage?t=${token}`);
 }

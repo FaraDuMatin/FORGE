@@ -61,6 +61,9 @@ model Project {
   clonedFrom String?
   fundingUrl String?
 
+  // optional YouTube link, parsed to a privacy (nocookie) embed at render time
+  videoUrl String?
+
   // recorded when CLOSED, drives the win wall / playbook
   outcome String?
 

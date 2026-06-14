@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { ListChecks, PencilLine, Users, Wrench } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Link } from "@/i18n/navigation";
 import { AddTaskForm } from "@/components/manage/AddTaskForm";
@@ -9,7 +10,9 @@ import { ManageTaskList } from "@/components/manage/ManageTaskList";
 import { CloseProjectForm } from "@/components/manage/CloseProjectForm";
 import { SetSuccessorForm } from "@/components/manage/SetSuccessorForm";
 import { StepBackForm } from "@/components/manage/StepBackForm";
+import { UpdateVideoForm } from "@/components/manage/UpdateVideoForm";
 import { TokenReveal } from "@/components/manage/TokenReveal";
+import { RememberProject } from "@/components/manage/RememberProject";
 import type { ManageContext } from "@/components/manage/ManageHiddenFields";
 import { getProjectBySlug } from "@/server/projects";
 import type { ProjectStatus } from "@/generated/prisma/client";
@@ -44,6 +47,13 @@ export default async function ManagePage({
 
   const notice = created === "1" ? "created" : handoff === "1" ? "handoff" : adopted === "1" ? "adopted" : null;
 
+  const stats: Stats = {
+    crew: project.members.length,
+    tasksDone: project.tasks.filter((task) => task.status === "DONE").length,
+    tasksTotal: project.tasks.length,
+    updates: project.updates.length,
+  };
+
   return (
     <Dashboard
       ctx={ctx}
@@ -53,10 +63,14 @@ export default async function ManagePage({
       notice={notice}
       successorName={project.successorName}
       successorEmail={project.successorEmail}
+      videoUrl={project.videoUrl}
+      stats={stats}
       tasks={tasks}
     />
   );
 }
+
+type Stats = { crew: number; tasksDone: number; tasksTotal: number; updates: number };
 
 function Dashboard({
   ctx,
@@ -66,6 +80,8 @@ function Dashboard({
   notice,
   successorName,
   successorEmail,
+  videoUrl,
+  stats,
   tasks,
 }: {
   ctx: ManageContext;
@@ -75,6 +91,8 @@ function Dashboard({
   notice: "created" | "handoff" | "adopted" | null;
   successorName: string | null;
   successorEmail: string | null;
+  videoUrl: string | null;
+  stats: Stats;
   tasks: { id: string; title: string; status: "OPEN" | "CLAIMED" | "DONE"; claimedByName: string | null }[];
 }) {
   const t = useTranslations("manage");
@@ -85,13 +103,22 @@ function Dashboard({
   return (
     <>
       <Header />
+      <RememberProject slug={slug} title={title} token={ctx.token} />
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-10 px-6 py-10">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{t("eyebrow")}</p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight">{title}</h1>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+            <Wrench size={14} />
+            {t("eyebrow")}
+          </span>
+          <h1 className="mt-3 text-2xl font-bold tracking-tight">{title}</h1>
           <Link href={`/p/${slug}`} className="mt-1 inline-block text-sm text-neutral-600 underline-offset-2 hover:underline dark:text-neutral-400">
             {t("viewPublic")}
           </Link>
+          <div className="mt-4 flex flex-wrap gap-2 text-sm">
+            <Stat icon={<Users size={16} />} label={t("statCrew")} value={stats.crew} />
+            <Stat icon={<ListChecks size={16} />} label={t("statTasks")} value={`${stats.tasksDone} / ${stats.tasksTotal}`} />
+            <Stat icon={<PencilLine size={16} />} label={t("statUpdates")} value={stats.updates} />
+          </div>
         </div>
 
         {notice ? <TokenReveal variant={notice} /> : null}
@@ -113,6 +140,10 @@ function Dashboard({
               <PostUpdateForm {...ctx} />
             </Section>
 
+            <Section title={t("videoHeading")}>
+              <UpdateVideoForm ctx={ctx} videoUrl={videoUrl} />
+            </Section>
+
             <Section title={ts("successorHeading")}>
               <p className="mb-3 text-sm text-neutral-500">{ts("successorSub")}</p>
               <SetSuccessorForm ctx={ctx} successorName={successorName} successorEmail={successorEmail} />
@@ -131,6 +162,16 @@ function Dashboard({
         )}
       </main>
     </>
+  );
+}
+
+function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-neutral-700 dark:border-neutral-800 dark:text-neutral-300">
+      <span className="text-emerald-600 dark:text-emerald-400">{icon}</span>
+      <span className="font-semibold">{value}</span>
+      <span className="text-neutral-500">{label}</span>
+    </span>
   );
 }
 

@@ -14,7 +14,7 @@
   "home": {
     "tagline": "Nobody acts alone.",
     "heroHeadline": "Build it in public. Finish it together.",
-    "heroSub": "Communities take on real-world projects the way open source builds software — claimable tasks, credited people, a few carried to the finish at a time.",
+    "heroSub": "Communities take on real-world projects the way open source builds software : claimable tasks, credited people, a few carried to the finish at a time.",
     "spotlightHeading": "In the spotlight",
     "spotlightSub": "A few projects at a time, finished, not a thousand abandoned.",
     "openSlot": "Open slot",
@@ -31,7 +31,19 @@
     "winsTeaser": "{finished, plural, one {# finished playbook} other {# finished playbooks}} · {copies, plural, =0 {not yet copied} one {copied in # city} other {copied in # cities}}",
     "winWallTeaser": "See what communities already finished",
     "startCta": "Start a project",
-    "joinCta": "Join a project"
+    "joinCta": "Join a project",
+    "manageLink": "Manage a project you started",
+    "welcomeBack": "Jump back into your projects"
+  },
+  "me": {
+    "title": "Your projects",
+    "sub": "FORGE has no accounts. This device remembers the projects you manage so you can jump straight back in — or paste your secret link to re-enter from anywhere.",
+    "yourProjectsHeading": "Remembered on this device",
+    "remove": "Remove",
+    "resumeHeading": "On a new device?",
+    "resumeHint": "Paste your secret manage link, or just the token from it. It's the only key — there are no accounts to recover it.",
+    "resumeLabel": "Manage link or token",
+    "resumeCta": "Open my project"
   },
   "directory": {
     "title": "All projects",
@@ -135,6 +147,9 @@
     "funding": "Transparent funding",
     "forkedFromLabel": "Forked from",
     "copiedIn": "Copied in {n, plural, one {# city} other {# cities}}",
+    "forkFamilyHeading": "This playbook is running in {n, plural, one {# city} other {# cities}}",
+    "forkTogether": "Together: {tasks, plural, one {# task done} other {# tasks done}} · {updates, plural, one {# build-log entry} other {# build-log entries}}",
+    "taskProgress": "{done} of {total} tasks done",
     "outcomeHeading": "Outcome",
     "readyHeading": "Ready, waiting for a slot",
     "readySub": "This project meets every bar. It takes the next open slot in its pool, or its place in the lottery when slots are contested.",
@@ -151,7 +166,9 @@
   },
   "share": {
     "copy": "Copy share link",
-    "copied": "Link copied"
+    "copied": "Link copied",
+    "qr": "QR code",
+    "hideQr": "Hide QR"
   },
   "manage": {
     "eyebrow": "Maintainer panel",
@@ -166,6 +183,14 @@
     "logLabel": "Post an update",
     "logHint": "What you did and why. The first entry is part of readiness.",
     "logPost": "Post update",
+    "statCrew": "crew",
+    "statTasks": "tasks done",
+    "statUpdates": "updates",
+    "videoHeading": "Project video",
+    "videoLabel": "YouTube link (optional)",
+    "videoHint": "A short video of the work. Shown on the public page. Paste a YouTube link, or clear it to remove.",
+    "videoSave": "Save video",
+    "videoSaved": "Video saved.",
     "closeHeading": "Finish the project",
     "closeLabel": "Outcome",
     "closeHint": "What got done. This becomes the playbook on the win wall.",
@@ -227,7 +252,11 @@
     "notfound": "Not found.",
     "form": {
       "missing": "Please fill in the required fields.",
-      "pool": "Pick a valid duration."
+      "pool": "Pick a valid duration.",
+      "video": "That doesn't look like a YouTube link. Use a youtube.com or youtu.be URL, or leave it empty."
+    },
+    "resume": {
+      "notfound": "No project matches that link or token. Check you copied the whole thing."
     },
     "crew": {
       "already": "That email is already on this crew."

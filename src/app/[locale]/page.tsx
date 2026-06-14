@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/Header";
 import { PeoplesChoiceFeature } from "@/components/home/PeoplesChoiceFeature";
 import { SpotlightStrip } from "@/components/home/SpotlightStrip";
+import { YourProjects } from "@/components/project/YourProjects";
 import { POOLS } from "@/lib/pools";
 import { getSpotlights, type SpotlightCard } from "@/lib/home";
 import { loadPeoplesChoice } from "@/server/peopleschoice";
@@ -31,6 +32,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <Header />
       <Hero />
       <main className="mx-auto w-full max-w-5xl flex-1 px-6 pb-20">
+        <WelcomeBack />
         <PeoplesChoiceFeature holder={holder} />
         <SpotlightStrip cards={spotlights} />
         <WinWallTeaser finished={finished} copies={copies} />
@@ -60,7 +62,20 @@ function Hero() {
           {t("joinCta")}
         </Link>
       </div>
+      <Link href="/me" className="mt-4 inline-block text-sm text-neutral-500 underline-offset-2 hover:text-emerald-600 hover:underline">
+        {t("manageLink")} →
+      </Link>
     </section>
+  );
+}
+
+function WelcomeBack() {
+  const t = useTranslations("home");
+  // Renders nothing when this device remembers no projects.
+  return (
+    <div className="mt-6 empty:mt-0">
+      <YourProjects heading={t("welcomeBack")} />
+    </div>
   );
 }
 

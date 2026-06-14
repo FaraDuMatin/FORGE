@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import type { Pool } from "@/generated/prisma/client";
+import type { Pool, ProjectStatus } from "@/generated/prisma/client";
 
 // The win wall ("Grow"): finished projects become playbooks any city can copy.
 // Fork credit = how far each playbook travelled, counted in distinct cities.
@@ -52,20 +52,49 @@ export async function listWins(): Promise<WinItem[]> {
   return wins.map((w) => ({ ...w, forkCities: credit.get(w.id) ?? 0 }));
 }
 
+export type ForkChild = { slug: string; title: string; city: string; status: ProjectStatus };
+
 export type Lineage = {
   source: { slug: string; title: string } | null; // the playbook this was forked from
   forkCities: number; // distinct cities this project has been forked into
+  forks: ForkChild[]; // the direct forks themselves
+  forkTasksDone: number; // total DONE tasks across all direct forks
+  forkUpdates: number; // total build-log entries across all direct forks
 };
 
-// Lineage for one project's detail page: where it came from, how far it spread.
+// Lineage for one project's detail page: where it came from, and the live state
+// of every city that forked it — distinct cities, combined tasks done, combined
+// build-log entries. One query over direct forks does both the count and the roll-up.
 export async function getLineage(projectId: string, clonedFrom: string | null): Promise<Lineage> {
-  const [source, credit] = await Promise.all([
+  const [source, forkRows] = await Promise.all([
     clonedFrom
       ? prisma.project.findUnique({ where: { id: clonedFrom }, select: { slug: true, title: true } })
       : Promise.resolve(null),
-    forkCitiesBySource([projectId]),
+    prisma.project.findMany({
+      where: { clonedFrom: projectId },
+      orderBy: { createdAt: "asc" },
+      select: {
+        slug: true,
+        title: true,
+        city: true,
+        status: true,
+        tasks: { where: { status: "DONE" }, select: { id: true } },
+        updates: { select: { id: true } },
+      },
+    }),
   ]);
-  return { source: source ?? null, forkCities: credit.get(projectId) ?? 0 };
+
+  const forks: ForkChild[] = forkRows.map((f) => ({
+    slug: f.slug,
+    title: f.title,
+    city: f.city,
+    status: f.status,
+  }));
+  const forkTasksDone = forkRows.reduce((n, f) => n + f.tasks.length, 0);
+  const forkUpdates = forkRows.reduce((n, f) => n + f.updates.length, 0);
+  const forkCities = new Set(forkRows.map((f) => cityKey(f.city))).size;
+
+  return { source: source ?? null, forkCities, forks, forkTasksDone, forkUpdates };
 }
 
 // Source data to prefill the new-project form when forking a playbook.

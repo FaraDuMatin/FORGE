@@ -14,7 +14,7 @@
   "home": {
     "tagline": "Personne n'agit seul.",
     "heroHeadline": "Construisez au grand jour. Terminez ensemble.",
-    "heroSub": "Les communautés mènent de vrais projets comme l'open source construit des logiciels — des tâches à réclamer, des gens crédités, quelques-uns menés à terme à la fois.",
+    "heroSub": "Les communautés mènent de vrais projets comme l'open source construit des logiciels : des tâches à réclamer, des gens crédités, quelques-uns menés à terme à la fois.",
     "spotlightHeading": "Sous les projecteurs",
     "spotlightSub": "Quelques projets à la fois, menés à terme, pas mille abandonnés.",
     "openSlot": "Place libre",
@@ -31,7 +31,19 @@
     "winsTeaser": "{finished, plural, one {# mode d'emploi terminé} other {# modes d'emploi terminés}} · {copies, plural, =0 {pas encore copié} one {copié dans # ville} other {copiés dans # villes}}",
     "winWallTeaser": "Voyez ce que les communautés ont déjà accompli",
     "startCta": "Lancer un projet",
-    "joinCta": "Rejoindre un projet"
+    "joinCta": "Rejoindre un projet",
+    "manageLink": "Gérer un projet que vous avez lancé",
+    "welcomeBack": "Reprenez vos projets"
+  },
+  "me": {
+    "title": "Vos projets",
+    "sub": "FORGE n'a pas de comptes. Cet appareil retient les projets que vous gérez pour y revenir directement — ou collez votre lien secret pour entrer depuis n'importe où.",
+    "yourProjectsHeading": "Retenus sur cet appareil",
+    "remove": "Retirer",
+    "resumeHeading": "Sur un nouvel appareil ?",
+    "resumeHint": "Collez votre lien de gestion secret, ou juste le jeton qu'il contient. C'est la seule clé — aucun compte ne permet de le récupérer.",
+    "resumeLabel": "Lien de gestion ou jeton",
+    "resumeCta": "Ouvrir mon projet"
   },
   "directory": {
     "title": "Tous les projets",
@@ -135,6 +147,9 @@
     "funding": "Financement transparent",
     "forkedFromLabel": "Forké depuis",
     "copiedIn": "Copié dans {n, plural, one {# ville} other {# villes}}",
+    "forkFamilyHeading": "Ce mode d'emploi tourne dans {n, plural, one {# ville} other {# villes}}",
+    "forkTogether": "Ensemble : {tasks, plural, one {# tâche terminée} other {# tâches terminées}} · {updates, plural, one {# entrée de journal} other {# entrées de journal}}",
+    "taskProgress": "{done} tâches terminées sur {total}",
     "outcomeHeading": "Résultat",
     "readyHeading": "Prêt, en attente d'une place",
     "readySub": "Ce projet remplit tous les critères. Il prend la prochaine place libre de son groupe, ou sa place au tirage quand les places sont disputées.",
@@ -151,7 +166,9 @@
   },
   "share": {
     "copy": "Copier le lien de partage",
-    "copied": "Lien copié"
+    "copied": "Lien copié",
+    "qr": "Code QR",
+    "hideQr": "Masquer le QR"
   },
   "manage": {
     "eyebrow": "Panneau du mainteneur",
@@ -166,6 +183,14 @@
     "logLabel": "Publier une mise à jour",
     "logHint": "Ce que vous avez fait et pourquoi. La première entrée fait partie de la préparation.",
     "logPost": "Publier",
+    "statCrew": "équipe",
+    "statTasks": "tâches faites",
+    "statUpdates": "mises à jour",
+    "videoHeading": "Vidéo du projet",
+    "videoLabel": "Lien YouTube (facultatif)",
+    "videoHint": "Une courte vidéo du travail. Affichée sur la page publique. Collez un lien YouTube, ou videz le champ pour le retirer.",
+    "videoSave": "Enregistrer la vidéo",
+    "videoSaved": "Vidéo enregistrée.",
     "closeHeading": "Terminer le projet",
     "closeLabel": "Résultat",
     "closeHint": "Ce qui a été accompli. Cela devient le mode d'emploi sur le mur des réussites.",
@@ -227,7 +252,11 @@
     "notfound": "Introuvable.",
     "form": {
       "missing": "Veuillez remplir les champs requis.",
-      "pool": "Choisissez une durée valide."
+      "pool": "Choisissez une durée valide.",
+      "video": "Ce lien ne ressemble pas à une vidéo YouTube. Utilisez une URL youtube.com ou youtu.be, ou laissez le champ vide."
+    },
+    "resume": {
+      "notfound": "Aucun projet ne correspond à ce lien ou ce jeton. Vérifiez que vous l'avez copié en entier."
     },
     "crew": {
       "already": "Ce courriel fait déjà partie de cette équipe."
