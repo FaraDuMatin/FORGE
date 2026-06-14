@@ -1,19 +1,18 @@
 import { prisma } from "@/lib/db";
-import type { Pool, ProjectStatus } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+import type { ProjectStatus } from "@/generated/prisma/client";
+import { prefixTsquery, searchClause, relevanceOrder } from "@/server/searchSql";
+import {
+  WINS_PAGE_SIZE,
+  type WinItem,
+  type WinsQuery,
+  type WinsResult,
+} from "@/lib/wins";
 
 // The win wall ("Grow"): finished projects become playbooks any city can copy.
 // Fork credit = how far each playbook travelled, counted in distinct cities.
 
-export type WinItem = {
-  id: string;
-  slug: string;
-  title: string;
-  city: string;
-  country: string;
-  pool: Pool;
-  outcome: string | null;
-  forkCities: number; // distinct cities among all descendants (any status)
-};
+export type { WinItem } from "@/lib/wins";
 
 // Normalize a city so "Lisbon" and " lisbon " count once.
 function cityKey(city: string): string {
@@ -50,6 +49,43 @@ export async function listWins(): Promise<WinItem[]> {
   });
   const credit = await forkCitiesBySource(wins.map((w) => w.id));
   return wins.map((w) => ({ ...w, forkCities: credit.get(w.id) ?? 0 }));
+}
+
+type WinRow = Omit<WinItem, "forkCities">;
+
+// Searchable, sortable, paginated win wall. Same indexed full-text + fuzzy search
+// as the directory (see searchSql.ts), scoped to CLOSED projects. Only one page of
+// rows leaves the DB; fork credit is computed for that page alone — so it scales.
+export async function searchWins(query: WinsQuery): Promise<WinsResult> {
+  const pq = query.q ? prefixTsquery(query.q) : "";
+  const where = query.q
+    ? Prisma.sql`WHERE p.status = 'CLOSED' AND ${searchClause(query.q, pq)}`
+    : Prisma.sql`WHERE p.status = 'CLOSED'`;
+  const order = query.q
+    ? Prisma.sql`${relevanceOrder(query.q, pq)} DESC, p."updatedAt" DESC`
+    : query.sort === "oldest"
+      ? Prisma.sql`p."updatedAt" ASC`
+      : Prisma.sql`p."updatedAt" DESC`;
+  const offset = (query.page - 1) * WINS_PAGE_SIZE;
+
+  const [countRows, rows] = await Promise.all([
+    prisma.$queryRaw<{ count: number }[]>(
+      Prisma.sql`SELECT count(*)::int AS count FROM "Project" p ${where}`,
+    ),
+    prisma.$queryRaw<WinRow[]>(Prisma.sql`
+      SELECT p.id, p.slug, p.title, p.city, p.country, p.pool::text AS pool, p.outcome
+      FROM "Project" p
+      ${where}
+      ORDER BY ${order}
+      LIMIT ${WINS_PAGE_SIZE} OFFSET ${offset}
+    `),
+  ]);
+
+  const total = countRows[0]?.count ?? 0;
+  const credit = await forkCitiesBySource(rows.map((r) => r.id));
+  const items: WinItem[] = rows.map((r) => ({ ...r, forkCities: credit.get(r.id) ?? 0 }));
+
+  return { items, total, page: query.page, totalPages: Math.max(1, Math.ceil(total / WINS_PAGE_SIZE)), query };
 }
 
 export type ForkChild = { slug: string; title: string; city: string; status: ProjectStatus };

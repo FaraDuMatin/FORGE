@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "FORGE — nobody acts alone",
+    "title": "FORGE",
     "description": "Communities build real-world projects the way open source builds software: in public, with claimable tasks and credited contributors, focused on a few at a time, built to outlive their founders."
   },
   "nav": {
@@ -12,7 +12,7 @@
     "spotlight": "Spotlight"
   },
   "home": {
-    "tagline": "Nobody acts alone.",
+    "tagline": "Where ideas are forged to completion.",
     "heroHeadline": "Build it in public. Finish it together.",
     "heroSub": "Communities take on real-world projects the way open source builds software : claimable tasks, credited people, a few carried to the finish at a time.",
     "spotlightHeading": "In the spotlight",
@@ -67,6 +67,7 @@
     "prev": "Previous",
     "next": "Next",
     "pageOf": "Page {page} of {total}",
+    "gotoPage": "Go to page {page}",
     "empty": "No projects yet. Be the first to start one."
   },
   "spotlight": {
@@ -99,7 +100,15 @@
     "finished": "Finished",
     "forkCta": "Copy this playbook",
     "copiedIn": "Copied in {n, plural, one {# city} other {# cities}}",
-    "notYetCopied": "Not copied yet — be the first city."
+    "notYetCopied": "Not copied yet — be the first city.",
+    "searchPlaceholder": "Search finished playbooks, cities…",
+    "sortLabel": "Sort",
+    "sortRecent": "Most recent",
+    "sortOldest": "Oldest first",
+    "recentHeading": "Most recent",
+    "allHeading": "All playbooks",
+    "results": "{n, plural, =0 {No matches} one {# finished} other {# finished}}",
+    "noResults": "No finished playbooks match. Try a different word."
   },
   "pool": {
     "week": "One week",

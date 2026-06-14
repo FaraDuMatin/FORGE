@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { Prisma } from "@/generated/prisma/client";
 import { readyIdsAmong } from "@/server/readiness";
+import { prefixTsquery, searchClause, relevanceOrder } from "@/server/searchSql";
 import {
   PAGE_SIZE,
   STAGE_STATUS,
@@ -15,45 +16,13 @@ import {
 // (full-text for relevance + pg_trgm for fuzzy/typo tolerance, both GIN-indexed —
 // see scripts/search-index.ts), so this scales to large tables: only one page of
 // rows ever leaves the database, and readiness is computed for that page alone.
-
-// Weighted full-text vector: title (A) outranks city/country (B) outranks goal
-// (C). Using 'simple' (not 'english') is deliberate — short queries like "so"
-// must prefix-match "solar"; 'english' drops "so" as a stop word. Weighting then
-// keeps a real title hit above the stop word buried in some goal text.
-// MUST stay identical to the project_fts_idx expression in scripts/search-index.ts.
-const TSV = Prisma.sql`(setweight(to_tsvector('simple', p.title), 'A') || setweight(to_tsvector('simple', p.city || ' ' || p.country), 'B') || setweight(to_tsvector('simple', p.goal), 'C'))`;
-
-// Fuzzy/typo doc = title + city + country only (NOT the long goal), so a typo
-// matches the name/place and isn't drowned by goal prose.
-// MUST stay identical to the project_trgm_idx expression in scripts/search-index.ts.
-const FUZZY = Prisma.sql`(p.title || ' ' || p.city || ' ' || p.country)`;
-
-// Turn raw input into a prefix tsquery: "so panl" -> "so:* & panl:*". Each token
-// is stripped to alphanumerics so user input can never break to_tsquery. The :*
-// makes it prefix-aware, so typing "so" matches the lexeme "solar". Empty when the
-// input has no usable tokens (then we lean on the trigram clause alone).
-function prefixTsquery(q: string): string {
-  return q
-    .trim()
-    .split(/\s+/)
-    .map((t) => t.replace(/[^a-zA-Z0-9]/g, ""))
-    .filter(Boolean)
-    .map((t) => `${t}:*`)
-    .join(" & ");
-}
+// The full-text / fuzzy SQL lives in src/server/searchSql.ts (shared with /wins).
 
 function whereSql(query: DirectoryQuery, pq: string): Prisma.Sql {
   const filters: Prisma.Sql[] = [];
   if (query.pool) filters.push(Prisma.sql`p.pool::text = ${query.pool}`);
   if (query.stage) filters.push(Prisma.sql`p.status::text = ${STAGE_STATUS[query.stage]}`);
-  if (query.q) {
-    // Prefix full-text (so -> solar) OR trigram word-similarity (sollar -> solar,
-    // matched against title/place, not the whole long document).
-    const clauses: Prisma.Sql[] = [];
-    if (pq) clauses.push(Prisma.sql`${TSV} @@ to_tsquery('simple', ${pq})`);
-    clauses.push(Prisma.sql`word_similarity(${query.q}, ${FUZZY}) > 0.3`);
-    filters.push(Prisma.sql`(${Prisma.join(clauses, " OR ")})`);
-  }
+  if (query.q) filters.push(searchClause(query.q, pq));
   return filters.length ? Prisma.sql`WHERE ${Prisma.join(filters, " AND ")}` : Prisma.empty;
 }
 
@@ -61,10 +30,7 @@ function orderSql(query: DirectoryQuery, pq: string): Prisma.Sql {
   if (query.q) {
     // Best of prefix rank and fuzzy similarity, so exact/prefix hits lead and
     // typos still surface; newest breaks ties.
-    const rank = pq
-      ? Prisma.sql`GREATEST(ts_rank(${TSV}, to_tsquery('simple', ${pq})), word_similarity(${query.q}, ${FUZZY}))`
-      : Prisma.sql`word_similarity(${query.q}, ${FUZZY})`;
-    return Prisma.sql`${rank} DESC, p."createdAt" DESC`;
+    return Prisma.sql`${relevanceOrder(query.q, pq)} DESC, p."createdAt" DESC`;
   }
   // No query: spotlights first (People's Choice ahead of the rest), then newest.
   return Prisma.sql`

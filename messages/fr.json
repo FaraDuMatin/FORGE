@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "FORGE — personne n'agit seul",
+    "title": "FORGE",
     "description": "Les communautés construisent des projets réels comme l'open source construit des logiciels : en public, avec des tâches à prendre et des contributeurs crédités, concentrées sur quelques-uns à la fois, conçues pour survivre à leurs fondateurs."
   },
   "nav": {
@@ -12,9 +12,9 @@
     "spotlight": "Projecteurs"
   },
   "home": {
-    "tagline": "Personne n'agit seul.",
-    "heroHeadline": "Construisez au grand jour. Terminez ensemble.",
-    "heroSub": "Les communautés mènent de vrais projets comme l'open source construit des logiciels : des tâches à réclamer, des gens crédités, quelques-uns menés à terme à la fois.",
+    "tagline": "Là où les idées sont forgées jusqu'à leur réalisation.",
+    "heroHeadline": "Construire en public. Finir ensemble.",
+    "heroSub": "Les communautés mènent des projets réels comme l'open source bâtit des logiciels : des tâches à s'approprier, des contributeurs reconnus, et une concentration sur quelques projets à la fois pour les mener jusqu'au bout.",
     "spotlightHeading": "Sous les projecteurs",
     "spotlightSub": "Quelques projets à la fois, menés à terme, pas mille abandonnés.",
     "openSlot": "Place libre",
@@ -67,6 +67,7 @@
     "prev": "Précédent",
     "next": "Suivant",
     "pageOf": "Page {page} sur {total}",
+    "gotoPage": "Aller à la page {page}",
     "empty": "Aucun projet pour l'instant. Soyez le premier à en lancer un."
   },
   "spotlight": {
@@ -99,7 +100,15 @@
     "finished": "Terminé",
     "forkCta": "Copier ce mode d'emploi",
     "copiedIn": "Copié dans {n, plural, one {# ville} other {# villes}}",
-    "notYetCopied": "Pas encore copié — soyez la première ville."
+    "notYetCopied": "Pas encore copié — soyez la première ville.",
+    "searchPlaceholder": "Cherchez un mode d'emploi, une ville…",
+    "sortLabel": "Trier",
+    "sortRecent": "Plus récents",
+    "sortOldest": "Plus anciens",
+    "recentHeading": "Plus récents",
+    "allHeading": "Tous les modes d'emploi",
+    "results": "{n, plural, =0 {Aucun résultat} one {# terminé} other {# terminés}}",
+    "noResults": "Aucun mode d'emploi ne correspond. Essayez un autre mot."
   },
   "pool": {
     "week": "Une semaine",
