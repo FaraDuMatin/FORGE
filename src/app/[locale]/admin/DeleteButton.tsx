@@ -6,7 +6,7 @@ export function DeleteButton({ title }: { title: string }) {
   return (
     <button
       type="submit"
-      style={{ color: "#c00" }}
+      className="adm-btn adm-btn-danger"
       onClick={(e) => {
         if (!confirm(`Delete "${title}"? This cascades to crew, tasks, log, and votes. Cannot be undone.`)) {
           e.preventDefault();
