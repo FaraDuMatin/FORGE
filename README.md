@@ -1,103 +1,55 @@
 # FORGE
 
-**Communities build real-world projects the way open source builds software:** in public, with claimable tasks and credited contributors, concentrated on a few spotlighted projects at a time, and built to outlive their founders.
+**Where ideas are forged to completion.**
+
+## Build it in public. Finish it together.
+
+Communities take on real-world projects the way open source builds software: claimable tasks, credited people, a few carried to the finish at a time.
 
 > Nobody acts alone.
 
+**Live:** https://forge-eight-flame.vercel.app
+
+---
+
+## The problem
+
+Communities want to act on climate. They post in group chats, hold meetings, start spreadsheets — and nothing ships. Not because the people aren't there. Because there is no structure that carries a project from idea to done.
+
+## What FORGE does
+
+FORGE gives community projects the same infrastructure open source software has: a public task board, credited contributors, a build log, and a focused spotlight so effort concentrates instead of scatters.
+
 The name is the method. **FORGE** = **F**ocus · **O**pen · **R**elay · **G**row · **E**ngage.
 
-- **Focus** (borrowed from boycott strategy) — instead of a thousand half-finished projects, the community concentrates on a few at a time. Projects sit in duration pools (1 week / 1 month / 6 months / 1 year), three spotlight slots each.
-- **Open** (borrowed from open source) — every project is documented and forkable by default: public build log, claimable task board, credit for every contributor.
-- **Relay** — when a maintainer steps away, someone else picks up the baton, so no project dies with its founder.
-- **Grow** — a finished project becomes a playbook anyone can copy and run in their own city.
-- **Engage** — spotlights are earned by readiness and filled by lottery, so the person with five neighbors has the same odds as someone with fifty thousand followers. One extra slot, People's Choice, is voted freely.
+**Focus** — only 3 projects run at a time per duration pool (1 week / 1 month / 6 months / 1 year). A project earns its slot by meeting fixed readiness bars: a real goal, real tasks, a real crew. When slots are contested, a public lottery decides — with an anti-starvation guarantee so no project waits forever. Reach cannot buy a slot.
 
-Green first, for climate projects. The same machinery carries any cause that needs hands.
+**Open** — every project is public: build log, task board, contributor credits. Anyone can join, claim a task, and report their work for review.
 
-## How it works
+**Relay** — when a maintainer steps away, a named successor picks up the baton. The project keeps its slot and its history. Nothing dies with its founder.
 
-1. **Post a project** — goal, city, a duration pool, first tasks, a small crew.
-2. **Get ready** — fixed readiness bars per pool (a real goal, ≥3 claimable tasks, a build-log entry, a crew minimum, longer pools need named roles and a successor). Bars, never votes.
-3. **Take a slot** — *fill-on-ready*: cross the bar while a slot is open and the project is spotlighted instantly. When ready projects outnumber open slots, a public **lottery** decides, with an anti-starvation guarantee for projects that keep missing.
-4. **Build in public** — anyone claims a task with a name and email, every contributor is credited, the build log is readable by all.
-5. **Relay or finish** — a maintainer can hand off (succession), or close with an outcome. Closed projects become **playbooks** on the win wall, forkable into other cities with credit back to the origin crew.
+**Grow** — when a project finishes, it becomes a playbook on the win wall. Anyone, anywhere, can copy it for their own city. Fork credit tracks how far the idea travels: solar panels in Medellin, copied in Rio and Nairobi, credits all three crews.
 
-No accounts. No ads. No leaderboards or points (ranking people reproduces the popularity dynamics the lottery removes). No AI writing or filtering anything. Joining is a link, a first name, and an email — that is the whole data footprint.
+**Engage** — one extra spotlight slot, People's Choice, is decided by pure community vote. One vote per person. The only slot that can be cancelled.
+
+---
+
+## What makes it equitable
+
+- No accounts. A name, an email, and a secret link. That is the entire data footprint.
+- No AI writing, filtering, or scoring anything.
+- No ads, no leaderboards, no popularity mechanics.
+- Spotlight slots are earned by readiness and filled by lottery, not by audience size.
+- Finished work belongs to the community, not the platform. Playbooks are forkable by anyone.
+
+---
 
 ## Stack
 
-- **Next.js 16** (App Router, TypeScript, Tailwind 4)
-- **Prisma 7** with the **Neon serverless driver adapter** (`@prisma/adapter-neon`) → **Neon Postgres** everywhere (no SQLite)
-- **next-intl** — English and French from day one
-- Stateless / serverless, all state-transitions synchronous (no cron), built to hold 10,000 users
-- Deploy: **Vercel** (kept portable — Neon + plain Prisma, no Vercel-only services — so a later move to Cloudflare Workers is a half-day, not a rewrite)
+Next.js 16 · Prisma 7 · Neon Postgres · Vercel · next-intl (EN + FR)
 
-### Prisma 7 note
+Stateless and serverless. All state in Postgres. No cron jobs. Built to hold 10,000+ users on a $0 spend cap.
 
-Prisma 7 carries **no `url` in `schema.prisma`**. The connection string flows through the Neon driver adapter in [`src/lib/db.ts`](src/lib/db.ts) at runtime, and [`prisma.config.ts`](prisma.config.ts) holds it for migrations.
-
-## Run locally
-
-```bash
-# 1. install
-npm install
-
-# 2. set the database url
-cp .env.example .env
-# edit .env -> paste your Neon pooled connection string (free at https://neon.tech)
-
-# 3. create the tables
-npm run db:push          # or: npm run db:migrate
-
-# 4. start
-npm run dev              # http://localhost:3000
-```
-
-## Deploy (Vercel)
-
-1. Import the repo into Vercel.
-2. Set `DATABASE_URL` in the project's environment variables (Neon prod branch).
-3. Deploy. `prisma generate` runs automatically (`postinstall` + `build`).
-4. Set a **$0 hard spend cap** in Vercel billing as insurance.
-
-## Project layout
-
-```
-src/
-  app/[locale]/      routes: / , /new , /projects , /spotlight , /pc , /wins , /p/[slug] , /p/[slug]/manage
-  app/api/           projects/search route handler (JSON, for the directory type-ahead)
-  lib/               db (Neon adapter), allocation, readiness, pools, week, home, directory, cardStyle, token
-  server/            server-only data + actions (directory search, wins, peopleschoice, succession)
-  i18n/              next-intl routing / request / navigation
-  components/        Header, LocaleSwitch, home/, project/, pc/, manage/, ui/
-  generated/prisma/  Prisma client (generated, gitignored)
-prisma/schema.prisma five models: Project, Member, Task, Update, PCVote
-messages/            en.json, fr.json
-```
-
-## Styling notes (cards / spotlight glow)
-
-Note to self for tuning the spotlight look.
-
-**Glow** — a slight emerald glow in the top-right corner (light cast from above) marks a spotlight card.
-- All project cards (home strip, `/spotlight`, `/projects`): [`src/lib/cardStyle.ts`](src/lib/cardStyle.ts), constants `GLOW` (spotlight) + `GLOW_STRONG` (People's Choice).
-- Big home PC card: [`src/components/home/PeoplesChoiceFeature.tsx`](src/components/home/PeoplesChoiceFeature.tsx) and the maintainer-panel header ([`manage/page.tsx`](src/app/[locale]/p/[slug]/manage/page.tsx)) carry their own inline gradient.
-
-Inside each `radial-gradient(ellipse 42% 55% at 100% 0%, rgba(16,185,129,0.10), transparent)`:
-- **Intensity** = the last number `0.10` → lower = fainter, higher = stronger.
-- **Reach / size** = `42% 55%` → smaller = tighter corner spot.
-- **Corner** = `at 100% 0%` = top-right (`0% 100%` = bottom-left, `100% 100%` = bottom-right, etc.).
-
-Current values: spotlight `0.10 / 42% 55%`, PC card `0.15 / 48% 60%`, big PC card `0.14 / 45% 60%`.
-
-**Border** — same `cardStyle.ts`: the `border-neutral-200 dark:border-neutral-800` on each branch. Fainter → `dark:border-neutral-800/50`. No border at all → remove `border` from `BASE` and the `border-*` classes.
-
-**Status pill colours** — [`src/components/project/StatusBadge.tsx`](src/components/project/StatusBadge.tsx): Spotlight = emerald, Queued = neutral, Finished = blue, Needs-maintainer = amber, Cancelled = red.
-
-## Roadmap / deferred
-
-- **Magic-link vote verification.** People's Choice voting is honor-system in the MVP: email + cookie dedup (one vote per email per project), bounded by READY-only eligibility, a 3-vote threshold to claim the slot, a persistent holder that keeps the slot until it finishes (tie at the top waits for more votes), and steward cancellation. A later upgrade verifies the voter's email via a magic link (verification only — no accounts, no user table) to harden one-person-one-vote without adding a login wall. We deliberately do **not** gate voting behind joining a project (no forced participation).
-- **Steward / admin console.** A privileged view to confirm a project is genuinely READY (real crew, real tasks) and to cancel spam or off-topic People's Choice entries. Deferred — it's an identity/permissions shift, not a small add.
-- **Account migration (if ever).** tokens-in-URL → Better Auth (self-hosted, data stays in our Postgres; preferred over Clerk for data custody). ~1–2 days, low data-risk because email is already the universal key, so backfill is a clean join. Kept out by choice — token-in-URL *is* the minimal-data Equitable story.
+---
 
 Built solo for the Green Hackathon, June 2026.
