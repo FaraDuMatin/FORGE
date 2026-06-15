@@ -40,11 +40,7 @@ export default function WalkthroughPage() {
         A project in Medellin gets copied in Rio and Nairobi? The original team gets credited for both.
       </Step>
 
-      <div style={{ marginTop: 48, padding: 20, background: "#f5f5f5", borderRadius: 10 }}>
-        <strong>The one-line version:</strong> communities build real projects the way open source builds software.
-        In public, with claimable tasks, credited contributors, and a few carried to the finish at a time.
-        Finished projects become playbooks that travel across cities.
-      </div>
+      
     </main>
   );
 }
