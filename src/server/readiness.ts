@@ -46,8 +46,8 @@ export async function loadProjectReadiness(projectId: string): Promise<Readiness
   if (!row) return { bars: [], ready: false };
   const [openTaskCount, crewCount, namedRoleCount, updateCount] = await Promise.all([
     prisma.task.count({ where: { projectId, status: "OPEN" } }),
-    prisma.member.count({ where: { projectId } }),
-    prisma.member.count({ where: { projectId, role: { not: null } } }),
+    prisma.member.count({ where: { projectId, status: "APPROVED" } }),
+    prisma.member.count({ where: { projectId, status: "APPROVED", role: { not: null } } }),
     prisma.update.count({ where: { projectId } }),
   ]);
   return readiness(toInput(row, openTaskCount, crewCount, namedRoleCount, updateCount > 0));
@@ -58,22 +58,25 @@ export async function loadProjectReadiness(projectId: string): Promise<Readiness
 async function readyIdsWhere(where: Prisma.ProjectWhereInput): Promise<Set<string>> {
   const rows = await prisma.project.findMany({
     where: { ...where, status: "QUEUED", isPeoplesChoice: false },
-    select: { ...baseSelect, _count: { select: { members: true, updates: true } } },
+    select: { ...baseSelect, _count: { select: { updates: true } } },
   });
   if (rows.length === 0) return new Set();
 
   const ids = rows.map((r) => r.id);
-  const [openTasks, namedRoles] = await Promise.all([
+  // Only APPROVED members count toward the crew + named-role bars.
+  const [openTasks, approvedCrew, namedRoles] = await Promise.all([
     prisma.task.groupBy({ by: ["projectId"], where: { projectId: { in: ids }, status: "OPEN" }, _count: { _all: true } }),
-    prisma.member.groupBy({ by: ["projectId"], where: { projectId: { in: ids }, role: { not: null } }, _count: { _all: true } }),
+    prisma.member.groupBy({ by: ["projectId"], where: { projectId: { in: ids }, status: "APPROVED" }, _count: { _all: true } }),
+    prisma.member.groupBy({ by: ["projectId"], where: { projectId: { in: ids }, status: "APPROVED", role: { not: null } }, _count: { _all: true } }),
   ]);
   const openByProject = new Map(openTasks.map((g) => [g.projectId, g._count._all]));
+  const crewByProject = new Map(approvedCrew.map((g) => [g.projectId, g._count._all]));
   const rolesByProject = new Map(namedRoles.map((g) => [g.projectId, g._count._all]));
 
   const ready = new Set<string>();
   for (const r of rows) {
     const result = readiness(
-      toInput(r, openByProject.get(r.id) ?? 0, r._count.members, rolesByProject.get(r.id) ?? 0, r._count.updates > 0),
+      toInput(r, openByProject.get(r.id) ?? 0, crewByProject.get(r.id) ?? 0, rolesByProject.get(r.id) ?? 0, r._count.updates > 0),
     );
     if (result.ready) ready.add(r.id);
   }

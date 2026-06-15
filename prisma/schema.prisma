@@ -29,7 +29,13 @@ enum ProjectStatus {
 enum TaskStatus {
   OPEN
   CLAIMED
+  SUBMITTED // claimer reported work, waiting on maintainer review
   DONE
+}
+
+enum MemberStatus {
+  PENDING // requested to join, awaiting maintainer approval
+  APPROVED
 }
 
 model Project {
@@ -86,6 +92,7 @@ model Member {
   name      String
   email     String
   role      String? // named role counts toward readiness for longer pools
+  status    MemberStatus @default(PENDING) // maintainer approves before crew is real
   createdAt DateTime @default(now())
 
   @@unique([projectId, email])
@@ -100,6 +107,8 @@ model Task {
   status         TaskStatus @default(OPEN)
   claimedByName  String?
   claimedByEmail String?
+  report         String? // claimer's write-up of the work, shown at review
+  reportUrl      String? // optional link (photo, PR, doc) attached to the report
   createdAt      DateTime   @default(now())
 
   @@index([projectId])

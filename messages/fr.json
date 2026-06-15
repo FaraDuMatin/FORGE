@@ -136,9 +136,16 @@
     "fEmail": "Courriel",
     "fRole": "Rôle (facultatif)",
     "fRoleHint": "Ce sur quoi vous aiderez. Compte pour la préparation des durées longues.",
-    "joinCta": "Rejoindre",
+    "joinCta": "Demander à rejoindre",
     "joined": "Vous faites partie de l'équipe. Vous pouvez prendre des tâches.",
-    "joinedAlready": "Vous êtes déjà dans cette équipe."
+    "joinedAlready": "Vous êtes déjà dans cette équipe.",
+    "requested": "Demande envoyée. Le mainteneur doit vous approuver avant que vous puissiez prendre des tâches.",
+    "pendingHeading": "Demandes en attente ({n})",
+    "approvedHeading": "Équipe ({n})",
+    "noPending": "Aucune demande en attente.",
+    "approve": "Approuver",
+    "decline": "Refuser",
+    "remove": "Retirer"
   },
   "task": {
     "heading": "Tâches",
@@ -146,11 +153,25 @@
     "emailPlaceholder": "Le courriel utilisé pour rejoindre",
     "claim": "Prendre",
     "claimed": "Prises",
-    "done": "Terminées"
+    "open": "Ouvertes",
+    "done": "Terminées",
+    "inReview": "En révision",
+    "reportCta": "Rendre compte",
+    "reportSubmit": "Soumettre pour révision",
+    "reportSubmitted": "Soumis. Le mainteneur va l'examiner.",
+    "reportPlaceholder": "Ce que vous avez fait. Le markdown fonctionne : **gras**, - listes…",
+    "reportUrlPlaceholder": "Lien (photo, doc, PR) — facultatif",
+    "reportLink": "Voir la pièce jointe"
   },
   "log": {
     "heading": "Journal de construction",
-    "empty": "Aucune mise à jour pour l'instant."
+    "empty": "Aucune mise à jour pour l'instant.",
+    "write": "Écrire",
+    "preview": "Aperçu",
+    "previewEmpty": "Rien à prévisualiser pour l'instant.",
+    "seeAll": "{n, plural, one {# mise à jour} other {# mises à jour}}",
+    "open": "Lire le journal",
+    "close": "Fermer"
   },
   "project": {
     "funding": "Financement transparent",
@@ -182,12 +203,15 @@
   "manage": {
     "eyebrow": "Panneau du mainteneur",
     "viewPublic": "Voir la page publique",
+    "crewHeading": "Équipe",
     "tasksHeading": "Tâches",
     "taskLabel": "Nouvelle tâche",
     "taskHint": "Quelque chose qu'un membre peut finir en quelques heures.",
     "taskAdd": "Ajouter la tâche",
     "noTasks": "Aucune tâche pour l'instant. Ajoutez-en pour que les gens aident.",
     "markDone": "Marquer terminée",
+    "taskAccept": "Accepter",
+    "taskReject": "Renvoyer",
     "logHeading": "Journal de construction",
     "logLabel": "Publier une mise à jour",
     "logHint": "Ce que vous avez fait et pourquoi. La première entrée fait partie de la préparation.",
@@ -272,7 +296,10 @@
     },
     "task": {
       "taken": "Cette tâche a déjà été prise.",
-      "joinFirst": "Rejoignez d'abord l'équipe, puis prenez la tâche avec le courriel utilisé."
+      "joinFirst": "Rejoignez d'abord l'équipe, puis prenez la tâche avec le courriel utilisé.",
+      "notApproved": "Le mainteneur ne vous a pas encore approuvé. Vous pourrez prendre des tâches une fois approuvé.",
+      "notClaimed": "Cette tâche n'est pas prise, il n'y a donc rien à soumettre.",
+      "notClaimer": "Seule la personne qui a pris cette tâche peut en rendre compte. Utilisez le courriel avec lequel vous l'avez prise."
     },
     "adopt": {
       "notAdoptable": "Ce projet n'est pas ouvert à l'adoption."

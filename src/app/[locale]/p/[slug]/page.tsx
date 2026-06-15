@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { CrewList, type CrewMember } from "@/components/project/CrewList";
 import { JoinForm } from "@/components/project/JoinForm";
 import { TaskBoard, type TaskView } from "@/components/project/TaskBoard";
-import { BuildLog } from "@/components/project/BuildLog";
+import { BuildLogPreview } from "@/components/project/BuildLogPreview";
 import { ReadinessChecklist } from "@/components/project/ReadinessPanel";
 import { AdoptForm } from "@/components/project/AdoptForm";
 import { ShareLink } from "@/components/project/ShareLink";
@@ -38,17 +38,22 @@ export default async function ProjectPage({
   const hasVoted = (await votedProjectIds()).has(project.id);
   const lineage = await getLineage(project.id, project.clonedFrom);
 
-  const members: CrewMember[] = project.members.map((m) => ({
-    id: m.id,
-    name: m.name,
-    role: m.role,
-    isMaintainer: m.email === project.maintainerEmail,
-  }));
+  // Public crew list shows approved members only; pending requests live in the panel.
+  const members: CrewMember[] = project.members
+    .filter((m) => m.status === "APPROVED")
+    .map((m) => ({
+      id: m.id,
+      name: m.name,
+      role: m.role,
+      isMaintainer: m.email === project.maintainerEmail,
+    }));
   const tasks: TaskView[] = project.tasks.map((task) => ({
     id: task.id,
     title: task.title,
     status: task.status,
     claimedByName: task.claimedByName,
+    report: task.report,
+    reportUrl: task.reportUrl,
   }));
 
   return (
@@ -239,7 +244,7 @@ function ProjectDetail(props: DetailProps) {
             {props.tasks.length > 0 ? <TaskProgress tasks={props.tasks} /> : null}
             <TaskBoard slug={props.slug} tasks={props.tasks} />
           </div>
-          <BuildLog entries={props.updates} />
+          <BuildLogPreview entries={props.updates} />
           {props.status !== "CLOSED" ? <JoinForm projectId={props.id} slug={props.slug} /> : null}
         </div>
       </main>

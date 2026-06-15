@@ -45,13 +45,6 @@ export type DirectoryResult = {
   query: DirectoryQuery;
 };
 
-// A capped preview of one stage for the browse (grouped) view of the directory.
-export type DirectoryGroup = {
-  stage: Stage;
-  items: DirectoryItem[];
-  total: number; // full count for the stage, drives the "See all N" link
-};
-
 // ── URL <-> query helpers (the query string is the single source of truth) ──
 
 const POOL_SET = new Set<Pool>(["WEEK", "MONTH", "HALF_YEAR", "YEAR"]);

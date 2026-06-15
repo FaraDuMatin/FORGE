@@ -46,7 +46,7 @@ export function Pagination({
             aria-label={t("gotoPage", { page: p })}
             className={`min-w-9 rounded-full border px-3 py-1.5 text-sm transition ${
               p === page
-                ? "border-emerald-600 bg-emerald-600 font-semibold text-white"
+                ? "border-emerald-500 bg-linear-to-b from-emerald-500 to-emerald-600 font-semibold text-white shadow-sm shadow-emerald-600/30"
                 : "border-neutral-300 hover:border-emerald-500 dark:border-neutral-700"
             }`}
           >

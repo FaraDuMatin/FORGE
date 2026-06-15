@@ -50,7 +50,7 @@ export async function createProject(_prev: ActionState, fd: FormData): Promise<A
       clonedFrom,
       maintainerName,
       maintainerEmail,
-      members: { create: { name: maintainerName, email: maintainerEmail, role } },
+      members: { create: { name: maintainerName, email: maintainerEmail, role, status: "APPROVED" } },
     },
     select: { slug: true, maintainerToken: true, pool: true },
   });

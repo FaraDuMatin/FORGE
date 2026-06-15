@@ -77,10 +77,13 @@ export async function stepBack(_prev: ActionState, fd: FormData): Promise<Action
         successorEmail: null,
       },
     });
-    // Make sure the new maintainer is on the crew (ignore if already a member).
-    await prisma.member
-      .create({ data: { projectId, name: project.successorName!, email: project.successorEmail! } })
-      .catch(() => {});
+    // Make sure the new maintainer is on the crew, APPROVED (promote if they were
+    // a pending member).
+    await prisma.member.upsert({
+      where: { projectId_email: { projectId, email: project.successorEmail! } },
+      create: { projectId, name: project.successorName!, email: project.successorEmail!, status: "APPROVED" },
+      update: { status: "APPROVED" },
+    });
 
     revalidatePath(`/${locale}/p/${slug}`);
     redirect(`/${locale}/p/${slug}/manage?t=${nextToken}&handoff=1`);
@@ -130,9 +133,12 @@ export async function adopt(_prev: ActionState, fd: FormData): Promise<ActionSta
       status: "QUEUED",
     },
   });
-  await prisma.member
-    .create({ data: { projectId, name, email: adopterEmail, role } })
-    .catch(() => {});
+  // The adopter is the new maintainer: on the crew, APPROVED.
+  await prisma.member.upsert({
+    where: { projectId_email: { projectId, email: adopterEmail } },
+    create: { projectId, name, email: adopterEmail, role, status: "APPROVED" },
+    update: { status: "APPROVED" },
+  });
 
   // Back in the running: fill-on-ready may re-spotlight it, else it waits its turn.
   await runAllocation(project.pool);

@@ -2,14 +2,10 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Header } from "@/components/Header";
 import { ProjectsClient } from "@/components/project/ProjectsClient";
-import { searchProjects, getDirectoryGroups } from "@/server/directory";
-import { parseDirectoryQuery, type DirectoryGroup, type DirectoryQuery, type DirectoryResult } from "@/lib/directory";
+import { searchProjects } from "@/server/directory";
+import { parseDirectoryQuery, type DirectoryQuery, type DirectoryResult } from "@/lib/directory";
 
 export const dynamic = "force-dynamic";
-
-function isBrowse(q: DirectoryQuery): boolean {
-  return !q.q && !q.pool && !q.stage;
-}
 
 export default async function ProjectsPage({
   params,
@@ -23,23 +19,18 @@ export default async function ProjectsPage({
   setRequestLocale(locale);
 
   const query = parseDirectoryQuery(sp);
-  // Always load the grouped previews (so clearing a search returns instantly) and,
-  // when a search/filter is active, the flat results for that query.
-  const [groups, result] = await Promise.all([
-    getDirectoryGroups(),
-    isBrowse(query) ? Promise.resolve(null) : searchProjects(query),
-  ]);
+  // One flat, paginated list for every state. With no search/filter the default
+  // order surfaces spotlights first and finished projects last (see orderSql).
+  const result = await searchProjects(query);
 
-  return <Directory groups={groups} result={result} query={query} />;
+  return <Directory result={result} query={query} />;
 }
 
 function Directory({
-  groups,
   result,
   query,
 }: {
-  groups: DirectoryGroup[];
-  result: DirectoryResult | null;
+  result: DirectoryResult;
   query: DirectoryQuery;
 }) {
   const t = useTranslations("directory");
@@ -50,7 +41,7 @@ function Directory({
       <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
         <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
         <p className="mt-2 text-neutral-600 dark:text-neutral-400">{t("sub")}</p>
-        <ProjectsClient groups={groups} initial={result} initialQuery={query} />
+        <ProjectsClient initial={result} initialQuery={query} />
       </main>
     </>
   );

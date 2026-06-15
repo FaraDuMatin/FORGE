@@ -180,10 +180,12 @@ const SEEDS: Seed[] = [
 ];
 
 function makeMembers(slug: string, crew: number, roleCount: number) {
+  // Seed crew is approved — they count toward readiness. (Real joins start PENDING.)
   return Array.from({ length: crew }, (_, i) => ({
     name: NAMES[i % NAMES.length],
     email: `${slug}-${i}@${SEED_DOMAIN}`,
     role: i < roleCount ? ROLES[i % ROLES.length] : null,
+    status: "APPROVED" as const,
   }));
 }
 

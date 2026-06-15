@@ -33,7 +33,7 @@ export function JoinForm({ projectId, slug }: { projectId: string; slug: string 
         <Input name="role" />
       </Field>
       <FormError code={state.error} />
-      {state.ok ? <FormSuccess message={t("joined")} /> : null}
+      {state.ok ? <FormSuccess message={t("requested")} /> : null}
       <SubmitButton>{t("joinCta")}</SubmitButton>
     </form>
   );

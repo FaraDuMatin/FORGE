@@ -5,11 +5,9 @@ import { prefixTsquery, searchClause, relevanceOrder } from "@/server/searchSql"
 import {
   PAGE_SIZE,
   STAGE_STATUS,
-  type DirectoryGroup,
   type DirectoryItem,
   type DirectoryQuery,
   type DirectoryResult,
-  type Stage,
 } from "@/lib/directory";
 
 // The searchable project directory query. Search and filters run in Postgres
@@ -71,20 +69,4 @@ export async function searchProjects(query: DirectoryQuery): Promise<DirectoryRe
   const items: DirectoryItem[] = rows.map((r) => ({ ...r, ready: ready.has(r.id) }));
 
   return { items, total, page: query.page, totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)), query };
-}
-
-// Browse view: a capped preview of each stage, so /projects opens as spaced
-// sections you explore (with "See all N"), not one long list. Reuses searchProjects
-// per stage — each query is indexed and bounded, so it scales with the page, not
-// the table.
-const BROWSE_STAGES: Stage[] = ["spotlight", "queued", "adoptable", "closed"];
-const GROUP_PREVIEW = 6;
-
-export async function getDirectoryGroups(): Promise<DirectoryGroup[]> {
-  const results = await Promise.all(BROWSE_STAGES.map((stage) => searchProjects({ stage, page: 1 })));
-  return BROWSE_STAGES.map((stage, i) => ({
-    stage,
-    items: results[i].items.slice(0, GROUP_PREVIEW),
-    total: results[i].total,
-  }));
 }

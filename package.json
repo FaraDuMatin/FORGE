@@ -19,6 +19,7 @@
     "@prisma/adapter-neon": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "lucide-react": "^1.18.0",
+    "marked": "^18.0.5",
     "next": "16.2.9",
     "next-intl": "^4.13.0",
     "qrcode.react": "^4.2.0",

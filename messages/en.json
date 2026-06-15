@@ -136,9 +136,16 @@
     "fEmail": "Email",
     "fRole": "Role (optional)",
     "fRoleHint": "What you'll help with. Counts toward readiness on longer pools.",
-    "joinCta": "Join",
+    "joinCta": "Ask to join",
     "joined": "You're on the crew. You can claim tasks now.",
-    "joinedAlready": "You're already on this crew."
+    "joinedAlready": "You're already on this crew.",
+    "requested": "Request sent. The maintainer will approve you before you can claim tasks.",
+    "pendingHeading": "Pending requests ({n})",
+    "approvedHeading": "Crew ({n})",
+    "noPending": "No requests waiting.",
+    "approve": "Approve",
+    "decline": "Decline",
+    "remove": "Remove"
   },
   "task": {
     "heading": "Tasks",
@@ -146,11 +153,25 @@
     "emailPlaceholder": "The email you joined with",
     "claim": "Claim",
     "claimed": "Claimed",
-    "done": "Done"
+    "open": "Open",
+    "done": "Done",
+    "inReview": "In review",
+    "reportCta": "Report work",
+    "reportSubmit": "Submit for review",
+    "reportSubmitted": "Submitted. The maintainer will review it.",
+    "reportPlaceholder": "What you did. Markdown works: **bold**, - lists…",
+    "reportUrlPlaceholder": "Link (photo, doc, PR) — optional",
+    "reportLink": "View attachment"
   },
   "log": {
     "heading": "Build log",
-    "empty": "No updates yet."
+    "empty": "No updates yet.",
+    "write": "Write",
+    "preview": "Preview",
+    "previewEmpty": "Nothing to preview yet.",
+    "seeAll": "{n, plural, one {# update} other {# updates}}",
+    "open": "Read the log",
+    "close": "Close"
   },
   "project": {
     "funding": "Transparent funding",
@@ -182,12 +203,15 @@
   "manage": {
     "eyebrow": "Maintainer panel",
     "viewPublic": "View public page",
+    "crewHeading": "Crew",
     "tasksHeading": "Tasks",
     "taskLabel": "New task",
     "taskHint": "Something a crew member can finish in a couple of hours.",
     "taskAdd": "Add task",
     "noTasks": "No tasks yet. Add a few so people can help.",
     "markDone": "Mark done",
+    "taskAccept": "Accept",
+    "taskReject": "Send back",
     "logHeading": "Build log",
     "logLabel": "Post an update",
     "logHint": "What you did and why. The first entry is part of readiness.",
@@ -272,7 +296,10 @@
     },
     "task": {
       "taken": "That task was already claimed.",
-      "joinFirst": "Join the crew first, then claim with the email you joined with."
+      "joinFirst": "Join the crew first, then claim with the email you joined with.",
+      "notApproved": "The maintainer hasn't approved you yet. You can claim once approved.",
+      "notClaimed": "That task isn't claimed, so there's nothing to submit.",
+      "notClaimer": "Only the person who claimed this task can report on it. Use the email you claimed with."
     },
     "adopt": {
       "notAdoptable": "This project isn't open for adoption."
