@@ -1,6 +1,10 @@
 import { prisma } from "@/lib/db";
+import { adminDeleteProject, adminResetToken, adminSetStatus } from "@/server/actions/admin";
+import { DeleteButton } from "./DeleteButton";
 
 export const dynamic = "force-dynamic";
+
+const STATUSES = ["QUEUED", "SPOTLIGHT", "CLOSED", "ADOPTABLE", "CANCELLED"] as const;
 
 export default async function AdminPage({
   searchParams,
@@ -30,44 +34,74 @@ export default async function AdminPage({
       slug: true,
       status: true,
       pool: true,
+      isPeoplesChoice: true,
       maintainerEmail: true,
       maintainerToken: true,
       createdAt: true,
     },
   });
 
+  const cell: React.CSSProperties = { padding: "8px 12px 8px 0", verticalAlign: "top" };
+
   return (
     <main style={{ padding: 40, fontFamily: "monospace", fontSize: 13 }}>
-      <h1 style={{ marginBottom: 16 }}>Admin — {projects.length} projects</h1>
+      <h1 style={{ marginBottom: 4 }}>Admin — {projects.length} projects</h1>
+      <p style={{ color: "#999", marginBottom: 20 }}>
+        Raw levers. Status override does not re-run allocation. Delete cascades to crew, tasks, log, votes.
+      </p>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr style={{ textAlign: "left", borderBottom: "2px solid #ccc" }}>
-            <th style={{ padding: "4px 12px 4px 0" }}>Title</th>
-            <th style={{ padding: "4px 12px 4px 0" }}>Status</th>
-            <th style={{ padding: "4px 12px 4px 0" }}>Pool</th>
-            <th style={{ padding: "4px 12px 4px 0" }}>Email</th>
-            <th style={{ padding: "4px 12px 4px 0" }}>Manage link</th>
-            <th style={{ padding: "4px 12px 4px 0" }}>Created</th>
+            <th style={cell}>Project</th>
+            <th style={cell}>Status</th>
+            <th style={cell}>Manage link / token</th>
+            <th style={cell}>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {projects.map((p) => (
-            <tr key={p.id} style={{ borderBottom: "1px solid #eee" }}>
-              <td style={{ padding: "4px 12px 4px 0" }}>
-                <a href={`/en/p/${p.slug}`}>{p.title}</a>
+          {projects.map((proj) => (
+            <tr key={proj.id} style={{ borderBottom: "1px solid #eee" }}>
+              <td style={cell}>
+                <a href={`/en/p/${proj.slug}`}>{proj.title}</a>
+                <div style={{ color: "#999" }}>
+                  {proj.pool}
+                  {proj.isPeoplesChoice ? " · PC" : ""} · {proj.maintainerEmail}
+                </div>
+                <div style={{ color: "#bbb" }}>{proj.createdAt.toISOString().slice(0, 10)}</div>
               </td>
-              <td style={{ padding: "4px 12px 4px 0" }}>{p.status}</td>
-              <td style={{ padding: "4px 12px 4px 0" }}>{p.pool}</td>
-              <td style={{ padding: "4px 12px 4px 0" }}>{p.maintainerEmail}</td>
-              <td style={{ padding: "4px 12px 4px 0" }}>
-                <a href={`/en/p/${p.slug}/manage?t=${p.maintainerToken}`}>
-                  manage
-                </a>
-                {" "}
-                <span style={{ color: "#999", userSelect: "all" }}>{p.maintainerToken}</span>
+
+              <td style={cell}>
+                <div style={{ marginBottom: 6 }}>{proj.status}</div>
+                <form action={adminSetStatus}>
+                  <input type="hidden" name="p" value={pw} />
+                  <input type="hidden" name="projectId" value={proj.id} />
+                  <select name="status" defaultValue={proj.status} style={{ fontFamily: "monospace" }}>
+                    {STATUSES.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>{" "}
+                  <button type="submit">set</button>
+                </form>
               </td>
-              <td style={{ padding: "4px 12px 4px 0", color: "#999" }}>
-                {p.createdAt.toISOString().slice(0, 10)}
+
+              <td style={cell}>
+                <a href={`/en/p/${proj.slug}/manage?t=${proj.maintainerToken}`}>manage →</a>
+                <div style={{ color: "#999", userSelect: "all", maxWidth: 240, wordBreak: "break-all" }}>
+                  {proj.maintainerToken}
+                </div>
+              </td>
+
+              <td style={cell}>
+                <form action={adminResetToken} style={{ marginBottom: 6 }}>
+                  <input type="hidden" name="p" value={pw} />
+                  <input type="hidden" name="projectId" value={proj.id} />
+                  <button type="submit">reset token</button>
+                </form>
+                <form action={adminDeleteProject}>
+                  <input type="hidden" name="p" value={pw} />
+                  <input type="hidden" name="projectId" value={proj.id} />
+                  <DeleteButton title={proj.title} />
+                </form>
               </td>
             </tr>
           ))}
