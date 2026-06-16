@@ -48,29 +48,20 @@ export default function WalkthroughPage() {
           <div className="wt-card" style={{ borderRadius: 12, padding: 24 }}>
             <h2 style={{ fontSize: 16, fontWeight: 700, marginTop: 0, marginBottom: 16 }}>Good to know</h2>
 
-            <Fact title="Spotlights aren't won by popularity">
-              Cross the readiness bars and you take the next open slot. Followers and reach play no part.
+            <Fact title="How spotlight slots are filled">
+              Each pool shows three projects at a time. A project that meets its readiness bars takes the next open slot, in the order projects become ready.
             </Fact>
-            <Fact title="The lottery only breaks ties">
-              When more ready projects want a slot than there are slots, a fair draw decides, with a guarantee for projects that keep missing.
+            <Fact title="When the lottery runs">
+              If more ready projects want a slot than there are slots, a fair draw picks among them. A project that keeps missing the draw is guaranteed the next one.
             </Fact>
-            <Fact title="Readiness is fixed bars, never votes">
-              A real goal, claimable tasks, a crew, a build-log entry. Longer pools also ask for named roles and a successor.
+            <Fact title="What readiness means">
+              A fixed set of requirements: a real goal, claimable tasks, a crew, and a build-log entry. Six-month and one-year pools also require named roles and a successor.
             </Fact>
-            <Fact title="Maintainers can step down">
-              Hand off to a named successor and the project keeps its slot, or release it for adoption so it never dies with one person.
+            <Fact title="Maintainer succession">
+              A maintainer can hand the project to a named successor and keep its slot, or release it for adoption so the work continues without them.
             </Fact>
-            <Fact title="People's Choice is the only cancellable slot">
-              A steward can remove a spam or off-topic wildcard entry. Earned spotlights can't be cancelled.
-            </Fact>
-            <Fact title="No accounts, minimal data">
-              A name and an email is the whole footprint. Your manage link is your only key, no passwords to lose.
-            </Fact>
-            <Fact title="No leaderboards or points">
-              Ranking people would rebuild the popularity game the lottery removes. Credit, yes. Scores, no.
-            </Fact>
-            <Fact title="Built for anywhere">
-              English and French out of the box, any city, any cause. Green projects first.
+            <Fact title="Cancelling People's Choice">
+              A steward can remove a spam or off-topic People's Choice entry. The wildcard is the only slot that can be cancelled this way.
             </Fact>
           </div>
         </aside>
