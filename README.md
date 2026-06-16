@@ -6,7 +6,7 @@
 
 Communities take on real-world projects the way open source builds software: claimable tasks, credited people, a few carried to the finish at a time.
 
-> Nobody acts alone.
+
 
 **Live:** https://forge-eight-flame.vercel.app
 
