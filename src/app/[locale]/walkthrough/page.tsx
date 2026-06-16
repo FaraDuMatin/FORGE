@@ -1,9 +1,11 @@
 export default function WalkthroughPage() {
   return (
-    <main style={{ padding: 48, fontFamily: "system-ui, sans-serif", maxWidth: 680, lineHeight: 1.7 }}>
+    <main style={{ padding: 48, fontFamily: "system-ui, sans-serif", maxWidth: 1040, margin: "0 auto", lineHeight: 1.7 }}>
       <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>How FORGE works</h1>
       <p style={{ color: "#666", marginBottom: 40 }}>A 2-minute guide for anyone new to the app.</p>
 
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 48, alignItems: "flex-start" }}>
+        <div style={{ flex: "1 1 520px", minWidth: 300 }}>
       <Step n={1} title="Someone starts a project">
         A person has an idea for a real community project (planting trees, fixing a park, going solar).
         They fill out a short form on <A href="/en/new">Start a project</A> — title, goal, city, and how long it will take.
@@ -39,9 +41,49 @@ export default function WalkthroughPage() {
         Anyone, anywhere, can copy that playbook for their own city. The fork credit shows how far the idea travels.
         A project in Medellin gets copied in Rio and Nairobi? The original team gets credited for both.
       </Step>
+        </div>
 
-      
+        <aside style={{ flex: "1 1 300px", minWidth: 280, maxWidth: 360 }}>
+          <div style={{ border: "1px solid #e5e5e5", borderRadius: 12, padding: 24, background: "#fafafa" }}>
+            <h2 style={{ fontSize: 16, fontWeight: 700, marginTop: 0, marginBottom: 16 }}>Good to know</h2>
+
+            <Fact title="Spotlights aren't won by popularity">
+              Cross the readiness bars and you take the next open slot. Followers and reach play no part.
+            </Fact>
+            <Fact title="The lottery only breaks ties">
+              When more ready projects want a slot than there are slots, a fair draw decides, with a guarantee for projects that keep missing.
+            </Fact>
+            <Fact title="Readiness is fixed bars, never votes">
+              A real goal, claimable tasks, a crew, a build-log entry. Longer pools also ask for named roles and a successor.
+            </Fact>
+            <Fact title="Maintainers can step down">
+              Hand off to a named successor and the project keeps its slot, or release it for adoption so it never dies with one person.
+            </Fact>
+            <Fact title="People's Choice is the only cancellable slot">
+              A steward can remove a spam or off-topic wildcard entry. Earned spotlights can't be cancelled.
+            </Fact>
+            <Fact title="No accounts, minimal data">
+              A name and an email is the whole footprint. Your manage link is your only key, no passwords to lose.
+            </Fact>
+            <Fact title="No leaderboards or points">
+              Ranking people would rebuild the popularity game the lottery removes. Credit, yes. Scores, no.
+            </Fact>
+            <Fact title="Built for anywhere">
+              English and French out of the box, any city, any cause. Green projects first.
+            </Fact>
+          </div>
+        </aside>
+      </div>
     </main>
+  );
+}
+
+function Fact({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ fontSize: 14, fontWeight: 600, color: "#111" }}>{title}</div>
+      <p style={{ margin: "2px 0 0", fontSize: 13, color: "#555", lineHeight: 1.55 }}>{children}</p>
+    </div>
   );
 }
 
