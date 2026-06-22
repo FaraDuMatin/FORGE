@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Header } from "@/components/Header";
+import { StartProjectCta } from "@/components/cta/StartProjectCta";
 import { PeoplesChoiceFeature } from "@/components/home/PeoplesChoiceFeature";
 import { SpotlightStrip } from "@/components/home/SpotlightStrip";
 import { YourProjects } from "@/components/project/YourProjects";
@@ -48,13 +49,8 @@ function Hero() {
       <p className="text-xs font-medium uppercase tracking-widest text-emerald-600">{t("tagline")}</p>
       <h1 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">{t("heroHeadline")}</h1>
       <p className="mt-4 max-w-xl text-base text-neutral-600 dark:text-neutral-400">{t("heroSub")}</p>
-      <div className="mt-7 flex flex-wrap gap-3">
-        <Link
-          href="/new"
-          className="inline-block rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-700"
-        >
-          {t("startCta")}
-        </Link>
+      <div className="mt-7 flex flex-wrap items-center gap-3">
+        <StartProjectCta label={t("startCta")} />
         <Link
           href="/projects"
           className="inline-block rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium text-neutral-900 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-800"

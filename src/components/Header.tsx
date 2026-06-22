@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { LocaleSwitch } from "./LocaleSwitch";
+import { StartProjectCta } from "@/components/cta/StartProjectCta";
 
 const LINKS = [
   { href: "/projects", key: "projects" },
@@ -47,12 +48,7 @@ export function Header() {
             {t(l.key)}
           </Link>
         ))}
-        <Link
-          href="/new"
-          className="rounded-full bg-emerald-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
-        >
-          {t("start")}
-        </Link>
+        <StartProjectCta label={t("start")} size="sm" />
         <LocaleSwitch />
       </nav>
 
@@ -81,13 +77,9 @@ export function Header() {
                 {t(l.key)}
               </Link>
             ))}
-            <Link
-              href="/new"
-              onClick={() => setOpen(false)}
-              className="mt-3 rounded-full bg-emerald-600 px-4 py-2.5 text-center text-base font-medium text-white hover:bg-emerald-700"
-            >
-              {t("start")}
-            </Link>
+            <div className="mt-3">
+              <StartProjectCta label={t("start")} size="sm" block onClick={() => setOpen(false)} />
+            </div>
             <div className="mt-3 pb-1">
               <LocaleSwitch />
             </div>

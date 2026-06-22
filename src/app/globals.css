@@ -47,3 +47,15 @@ body {
   .md-body code { background: rgba(255,255,255,0.08); }
   .md-body blockquote { border-left-color: rgba(255,255,255,0.18); }
 }
+
+/* ---- Star Border CTA (StartProjectCta) — orbiting border light ---- */
+@keyframes cta-star-bottom {
+  0%   { transform: translate(0%, 0%);   opacity: 1; }
+  100% { transform: translate(-100%, 0%); opacity: 0; }
+}
+@keyframes cta-star-top {
+  0%   { transform: translate(0%, 0%);  opacity: 1; }
+  100% { transform: translate(100%, 0%); opacity: 0; }
+}
+.cta-star-bottom { animation: cta-star-bottom linear infinite alternate; }
+.cta-star-top    { animation: cta-star-top    linear infinite alternate; }
